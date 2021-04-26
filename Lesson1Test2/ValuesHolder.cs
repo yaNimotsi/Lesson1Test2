@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -10,13 +11,11 @@ namespace Lesson1Test2
     public class ValuesHolder
     {
         
-        public List<DataHolder> Values;
+        public static List<DataHolder> Values;
         
         public ValuesHolder()
         {
-            if (!IsJsonFileExists(out var jsonText)) return;
-
-            Values = JsonSerializer.Deserialize<List<DataHolder>>(jsonText);
+            Values = JsonDeserialize();
         }
 
         /// <summary>
@@ -37,17 +36,33 @@ namespace Lesson1Test2
         }
 
         /// <summary>
+        /// Получение десириализованной строки
+        /// </summary>
+        /// <returns></returns>
+        private static List<DataHolder> JsonDeserialize()
+        {
+            if (!IsJsonFileExists(out var jsonText)) return null;
+            var rez = JsonSerializer.Deserialize<List<DataHolder>>(jsonText);
+            return rez;
+        }
+
+        /// <summary>
         /// Добавление нового прогноза
         /// </summary>
-        public void AddDataHolder(string newForecast)
+        public static List<DataHolder> AddDataHolder(string newForecast)
         {
+            Values = JsonDeserialize();
+
             var dataHolder = new DataHolder()
             {
                 DateForecast = DateTime.Now.ToShortDateString(),
                 Forecast = newForecast
             };
+
             Values.Add(dataHolder);
-            AddForecastToJson();
+            UpdateJson();
+
+            return Values;
         }
 
         /// <summary>
@@ -63,19 +78,47 @@ namespace Lesson1Test2
             return Path.Combine(path ?? string.Empty, "DataHolder.json");
         }
 
-        private void AddForecastToJson()
+        /// <summary>
+        /// Добавление записи в Json
+        /// </summary>
+        private static void UpdateJson()
         {
             var finPath = GetJsonPath();
-
 
             var json = JsonSerializer.Serialize(Values.ToArray());
 
             File.WriteAllText(@"" + finPath, json, Encoding.ASCII);
         }
+        
 
-        public void UpdateForecast()
+        public static List<DataHolder> UpdateForecast(string dateToUpdate, string newVal)
         {
+            Values = JsonDeserialize();
 
+            foreach (var t in Values)
+            {
+                if (t.DateForecast == dateToUpdate)
+                {
+                    t.Forecast = newVal;
+                    break;
+                }
+            }
+
+            UpdateJson();
+
+            return Values;
         }
+
+        public static List<DataHolder> DeleteForecast(string dateForDelete)
+        {
+            Values = JsonDeserialize();
+
+            Values = Values.Where(w => w.DateForecast != dateForDelete).ToList();
+
+            UpdateJson();
+
+            return Values;
+        }
+        
     }
 }

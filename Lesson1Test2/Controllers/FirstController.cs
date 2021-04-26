@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Lesson1Test2.Controllers
@@ -7,30 +8,45 @@ namespace Lesson1Test2.Controllers
     [Route("api/crud")]
     public class FirstController : ControllerBase
     {
-        private readonly ValuesHolder _holder;
+        private List<DataHolder> _holder;
+        
 
         public FirstController(ValuesHolder holder)
         {
-            this._holder = holder;
+            this._holder = ValuesHolder.Values;
         }
 
         [HttpPost("create")]
         public IActionResult Create([FromQuery] string input)
         {
-            _holder.AddDataHolder(input);
-            return Ok();
+            var _holder = ValuesHolder.AddDataHolder(input);
+            return Ok(_holder?.ToString());
         }
 
         [HttpGet("read")]
         public IActionResult Read()
         {
-            return Ok(_holder.Values?.ToString());
+            return Ok(_holder?.ToString());
+        }
+
+        [HttpPut("update")]
+        public IActionResult Update([FromQuery] string dateToUpdate, [FromQuery] string newValue)
+        {
+            var _holder = ValuesHolder.UpdateForecast(dateToUpdate, newValue);
+
+            return Ok(_holder?.ToString());
+        }
+
+        [HttpDelete("delete")]
+        public IActionResult Delete([FromQuery] string stringsToDelete)
+        {
+            var _holder = ValuesHolder.DeleteForecast(stringsToDelete);
+            return Ok(_holder?.ToString());
         }
 
         [HttpGet]
         public string Get()
         {
-
             return "JustUnswer";
         }
     }
