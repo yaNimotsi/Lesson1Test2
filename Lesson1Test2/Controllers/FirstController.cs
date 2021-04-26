@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 
-namespace Lesson1Test2.Controllers
+namespace MyWatherForecast.Controllers
 {
     [ApiController]
     [Route("api/crud")]

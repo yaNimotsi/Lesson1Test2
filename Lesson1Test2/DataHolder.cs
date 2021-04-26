@@ -1,5 +1,5 @@
 ﻿
-namespace Lesson1Test2
+namespace MyWatherForecast
 {
     public class DataHolder
     {

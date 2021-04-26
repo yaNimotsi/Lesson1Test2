@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
-namespace Lesson1Test2
+namespace MyWatherForecast
 {
     public class ValuesHolder: List<DataHolder>
     {
