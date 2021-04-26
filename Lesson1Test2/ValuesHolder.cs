@@ -8,10 +8,10 @@ using System.Text.Json;
 
 namespace Lesson1Test2
 {
-    public class ValuesHolder
+    public class ValuesHolder: List<DataHolder>
     {
         
-        public static List<DataHolder> Values;
+        public List<DataHolder> Values;
         
         public ValuesHolder()
         {
@@ -39,18 +39,19 @@ namespace Lesson1Test2
         /// Получение десириализованной строки
         /// </summary>
         /// <returns></returns>
-        private static List<DataHolder> JsonDeserialize()
+        private List<DataHolder> JsonDeserialize()
         {
-            if (!IsJsonFileExists(out var jsonText)) return null;
-            var rez = JsonSerializer.Deserialize<List<DataHolder>>(jsonText);
+            if (!IsJsonFileExists(out var jsonText)) return new List<DataHolder>();
+            var rez = JsonSerializer.Deserialize<List<DataHolder>>(jsonText) ?? new List<DataHolder>();
             return rez;
         }
 
         /// <summary>
         /// Добавление нового прогноза
         /// </summary>
-        public static List<DataHolder> AddDataHolder(string newForecast)
+        public List<DataHolder> AddDataHolder(string newForecast)
         {
+            Values = new List<DataHolder>();
             Values = JsonDeserialize();
 
             var dataHolder = new DataHolder()
@@ -69,7 +70,7 @@ namespace Lesson1Test2
         /// Получение пути файла Json
         /// </summary>
         /// <returns></returns>
-        public static string GetJsonPath()
+        private static string GetJsonPath()
         {
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;
             var uri = new UriBuilder(codeBase ?? string.Empty);
@@ -81,7 +82,7 @@ namespace Lesson1Test2
         /// <summary>
         /// Добавление записи в Json
         /// </summary>
-        private static void UpdateJson()
+        private void UpdateJson()
         {
             var finPath = GetJsonPath();
 
@@ -91,7 +92,7 @@ namespace Lesson1Test2
         }
         
 
-        public static List<DataHolder> UpdateForecast(string dateToUpdate, string newVal)
+        public List<DataHolder> UpdateForecast(string dateToUpdate, string newVal)
         {
             Values = JsonDeserialize();
 
@@ -109,7 +110,7 @@ namespace Lesson1Test2
             return Values;
         }
 
-        public static List<DataHolder> DeleteForecast(string dateForDelete)
+        public List<DataHolder> DeleteForecast(string dateForDelete)
         {
             Values = JsonDeserialize();
 
@@ -119,6 +120,15 @@ namespace Lesson1Test2
 
             return Values;
         }
-        
+
+        public string MyToString()
+        {
+            var rez = "";
+            foreach (var dataHolder in Values)
+            {
+                rez += $"For date {dataHolder.DateForecast} temp is {dataHolder.Forecast}; \n";
+            }
+            return rez;
+        }
     }
 }
