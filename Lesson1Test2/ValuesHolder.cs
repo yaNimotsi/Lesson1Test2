@@ -1,72 +1,78 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
 
 namespace Lesson1Test2
 {
-    [Serializable]
-    public class ValuesHolder :IFormatter
+    public class ValuesHolder
     {
-        public List<string> Values;
-        public DateTime Date { get; set; }
-        public int temp { get; set; }
-
-        [NonSerialized]
-        private BinaryFormatter _formatter = new BinaryFormatter();
-
-        public object Deserialize(Stream serializationStream)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Serialize(Stream serializationStream, object graph)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SerializationBinder Binder { get; set; }
-        public StreamingContext Context { get; set; }
-        public ISurrogateSelector SurrogateSelector { get; set; }
-
+        
+        public List<DataHolder> Values;
+        
         public ValuesHolder()
         {
-            using (FileStream fs = new FileStream("temp.dat", FileMode.OpenOrCreate))
-            {
-                var desiarilezeStrings = (List<string>) _formatter.Deserialize(fs);
-                Values = (List<string>) _formatter.Deserialize(fs);
-            }
-        }
+            if (!IsJsonFileExists(out var jsonText)) return;
 
-        private void ToSerialize(List<string> Values)
-        {
-            using (FileStream fs = new FileStream("temp.dat", FileMode.OpenOrCreate))
-            {
-                _formatter.Serialize(fs, Values);
-            }
-        }
-
-        private void AddValues(string val)
-        {
-            string date = DateTime.Now.ToShortDateString();
-            Values.Add($"Temperature for date {date} is {val}");
+            Values = JsonSerializer.Deserialize<List<DataHolder>>(jsonText);
         }
 
         /// <summary>
-        /// Find and update string by user date
+        /// Проверка существования Json файла
         /// </summary>
-        /// <param name="stringToUpdate"></param>
-        /// <param name="newVal"></param>
-        private void UpdateVal(string stringToUpdate, string newVal)
+        /// <param name="jsonText"> Выходная строка хранящаяся в Json файле</param>
+        /// <returns></returns>
+        private static bool IsJsonFileExists(out string jsonText)
         {
-            for (var i = 0; i < Values.Count; i++)
-            {
-                var strings = Values[i].Split(' ');
+            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            var uri = new UriBuilder(codeBase);
+            var path = Uri.UnescapeDataString(uri.Path);
+            path = Path.GetDirectoryName(path);
+            var finPath = Path.Combine(path, "DataHolder.json");
 
-                if (strings[3] == stringToUpdate)
-                    Values[i] = $"Temperature for date {strings[3]} is {newVal}";
-            }
+
+
+            if (File.Exists(@""+ finPath) == false) 
+                File.WriteAllText(@"" + finPath, "", Encoding.ASCII);
+
+            jsonText = File.ReadAllText(@"" + finPath);
+
+            return jsonText.Length > 0;
+        }
+
+        /// <summary>
+        /// Добавление нового прогноза
+        /// </summary>
+        public void AddDataHolder(string newForecast)
+        {
+            var dataHolder = new DataHolder()
+            {
+                DateForecast = DateTime.Now.ToShortDateString(),
+                Forecast = newForecast
+            };
+            Values.Add(dataHolder);
+            AddForecastToJson();
+        }
+
+        private void AddForecastToJson()
+        {
+            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            var uri = new UriBuilder(codeBase);
+            var path = Uri.UnescapeDataString(uri.Path);
+            path = Path.GetDirectoryName(path);
+            var finPath = Path.Combine(path, "DataHolder.json");
+
+
+            var json = JsonSerializer.Serialize(Values.ToArray());
+
+            File.WriteAllText(@"" + finPath, json, Encoding.ASCII);
+        }
+
+        public void UpdateForecast()
+        {
+
         }
     }
 }

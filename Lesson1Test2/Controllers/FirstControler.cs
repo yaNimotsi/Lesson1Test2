@@ -18,24 +18,24 @@ namespace Lesson1Test2.Controllers
         [HttpPost("create")]
         public IActionResult Create([FromQuery] string input)
         {
-            _holder.Values.Add(input);
+            _holder.AddDataHolder(input);
             return Ok();
         }
 
         [HttpGet("read")]
         public IActionResult Read()
         {
-            return Ok(_holder.Values);
+            return Ok(_holder.Values?.ToString());
         }
 
         [HttpPut("update")]
         public IActionResult Update([FromQuery] string stringsToUpdate, [FromQuery] string newValue)
         {
-            for (int i = 0; i < _holder.Values.Count; i++)
+            /*for (int i = 0; i < _holder.Values.Count; i++)
             {
                 if (_holder.Values[i] == stringsToUpdate)
                     _holder.Values[i] = newValue;
-            }
+            }*/
 
             return Ok();
         }
@@ -43,7 +43,7 @@ namespace Lesson1Test2.Controllers
         [HttpDelete("delete")]
         public IActionResult Delete([FromQuery] string stringsToDelete)
         {
-            _holder.Values = _holder.Values.Where(w => w != stringsToDelete).ToList();
+           // _holder.Values = _holder.Values.Where(w => w != stringsToDelete).ToList();
             return Ok();
         }
 
