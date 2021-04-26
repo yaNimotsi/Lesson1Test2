@@ -26,13 +26,7 @@ namespace Lesson1Test2
         /// <returns></returns>
         private static bool IsJsonFileExists(out string jsonText)
         {
-            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            var uri = new UriBuilder(codeBase);
-            var path = Uri.UnescapeDataString(uri.Path);
-            path = Path.GetDirectoryName(path);
-            var finPath = Path.Combine(path, "DataHolder.json");
-
-
+            var finPath = GetJsonPath();
 
             if (File.Exists(@""+ finPath) == false) 
                 File.WriteAllText(@"" + finPath, "", Encoding.ASCII);
@@ -56,13 +50,22 @@ namespace Lesson1Test2
             AddForecastToJson();
         }
 
-        private void AddForecastToJson()
+        /// <summary>
+        /// Получение пути файла Json
+        /// </summary>
+        /// <returns></returns>
+        public static string GetJsonPath()
         {
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            var uri = new UriBuilder(codeBase);
+            var uri = new UriBuilder(codeBase ?? string.Empty);
             var path = Uri.UnescapeDataString(uri.Path);
             path = Path.GetDirectoryName(path);
-            var finPath = Path.Combine(path, "DataHolder.json");
+            return Path.Combine(path ?? string.Empty, "DataHolder.json");
+        }
+
+        private void AddForecastToJson()
+        {
+            var finPath = GetJsonPath();
 
 
             var json = JsonSerializer.Serialize(Values.ToArray());
