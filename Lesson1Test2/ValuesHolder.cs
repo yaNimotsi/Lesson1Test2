@@ -47,26 +47,6 @@ namespace Lesson1Test2
         }
 
         /// <summary>
-        /// Добавление нового прогноза
-        /// </summary>
-        /*public List<DataHolder> AddDataHolder(string newForecast)
-        {
-            Values = new List<DataHolder>();
-            Values = JsonDeserialize();
-
-            var dataHolder = new DataHolder()
-            {
-                DateForecast = DateTime.Now.ToShortDateString(),
-                Forecast = newForecast
-            };
-
-            Values.Add(dataHolder);
-            UpdateJson();
-
-            return Values;
-        }*/
-
-        /// <summary>
         /// Получение пути файла Json
         /// </summary>
         /// <returns></returns>
@@ -90,37 +70,11 @@ namespace Lesson1Test2
 
             File.WriteAllText(@"" + finPath, json, Encoding.ASCII);
         }
-        
 
-        /*public List<DataHolder> UpdateForecast(string dateToUpdate, string newVal)
-        {
-            Values = JsonDeserialize();
-
-            foreach (var t in Values)
-            {
-                if (t.DateForecast == dateToUpdate)
-                {
-                    t.Forecast = newVal;
-                    break;
-                }
-            }
-
-            UpdateJson();
-
-            return Values;
-        }*/
-
-        /*public List<DataHolder> DeleteForecast(string dateForDelete)
-        {
-            Values = JsonDeserialize();
-
-            Values = Values.Where(w => w.DateForecast != dateForDelete).ToList();
-
-            UpdateJson();
-
-            return Values;
-        }*/
-
+        /// <summary>
+        /// Метод для вывода прогнозов
+        /// </summary>
+        /// <returns></returns>
         public string MyToString()
         {
             var rez = "";
@@ -131,8 +85,13 @@ namespace Lesson1Test2
             return rez;
         }
 
-
-        public List<DataHolder> AddDataHolder(DateTime dateForecast, double forecast)
+        /// <summary>
+        /// Добавление нового прогноза
+        /// </summary>
+        /// <param name="dateForecast"> Дата, к которой принадлежит прогноз</param>
+        /// <param name="forecast"> Значение прогноза</param>
+        /// <returns></returns>
+        public List<DataHolder> AddForecast(DateTime dateForecast, double forecast)
         {
             Values = new List<DataHolder>();
             Values = JsonDeserialize();
@@ -149,26 +108,44 @@ namespace Lesson1Test2
             return Values;
         }
 
-        public List<DataHolder> DeleteForecast(DateTime sDateForDelete, DateTime eDateToDelete)
+        /// <summary>
+        /// Удаление прогноза по указанной дате
+        /// </summary>
+        /// <param name="startDateRange"> Начальный диапазон дат, подлежащих удалению</param>
+        /// <param name="endtDateRange"> конечный диапазон дат, подлежащих удалению</param>
+        /// <returns></returns>
+        public List<DataHolder> DeleteForecast(DateTime startDateRange, DateTime endtDateRange)
         {
             Values = JsonDeserialize();
 
-            Values = Values.Where(w => (w.DateForecast <= sDateForDelete || w.DateForecast >= eDateToDelete)).ToList();
+            Values = Values.Where(w => (w.DateForecast <= startDateRange || w.DateForecast >= endtDateRange)).ToList();
 
             UpdateJson();
 
             return Values;
         }
 
-        public List<DataHolder> GetForecastByRange(DateTime sDateRange, DateTime eDateRange)
+        /// <summary>
+        /// Получение прогнозов, в указанном диапазоне дат
+        /// </summary>
+        /// <param name="startDateRange"> Начальная дата</param>
+        /// <param name="endDateRange"> Конечная дата</param>
+        /// <returns></returns>
+        public List<DataHolder> GetForecastByRange(DateTime startDateRange, DateTime endDateRange)
         {
             Values = JsonDeserialize();
 
-            Values = Values.Where(w => (w.DateForecast >= sDateRange && w.DateForecast <= eDateRange)).ToList();
+            Values = Values.Where(w => (w.DateForecast >= startDateRange && w.DateForecast <= endDateRange)).ToList();
             
             return Values;
         }
 
+        /// <summary>
+        /// Изменение прогноза на указанную дату
+        /// </summary>
+        /// <param name="dateToUpdate"> Дата, к которой надо изменить прогноз</param>
+        /// <param name="newVal"> Новое значение прогноза</param>
+        /// <returns></returns>
         public List<DataHolder> UpdateForecast(DateTime dateToUpdate, double newVal)
         {
             Values = JsonDeserialize();

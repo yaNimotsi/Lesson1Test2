@@ -12,15 +12,15 @@ namespace Lesson1Test2.Controllers
         public IActionResult Create([FromQuery] DateTime dateForecast, [FromQuery] double forecast)
         {
             var valuesHolder = new ValuesHolder();
-            valuesHolder.AddDataHolder(dateForecast, forecast);
+            valuesHolder.AddForecast(dateForecast, forecast);
             return Ok(valuesHolder.MyToString());
         }
 
         [HttpGet("read")]
-        public IActionResult Read([FromQuery] DateTime sDateRange, [FromQuery] DateTime eDateRange)
+        public IActionResult Read([FromQuery] DateTime startDateRange, [FromQuery] DateTime endDateRange)
         {
             var valuesHolder = new ValuesHolder();
-            valuesHolder.GetForecastByRange(sDateRange, eDateRange);
+            valuesHolder.GetForecastByRange(startDateRange, endDateRange);
             return Ok(valuesHolder.MyToString());
         }
 
@@ -33,10 +33,10 @@ namespace Lesson1Test2.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete([FromQuery] DateTime sDateForDelete, [FromQuery] DateTime eDateToDelete)
+        public IActionResult Delete([FromQuery] DateTime startDateForDelete, [FromQuery] DateTime endDateToDelete)
         {
             var valuesHolder = new ValuesHolder();
-            valuesHolder.DeleteForecast(sDateForDelete, eDateToDelete);
+            valuesHolder.DeleteForecast(startDateForDelete, endDateToDelete);
             return Ok(valuesHolder.MyToString());
         }
 
