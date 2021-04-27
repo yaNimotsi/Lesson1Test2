@@ -1,39 +1,50 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Lesson1Test2.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/crud")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        [HttpPost("create")]
+        public IActionResult Create([FromQuery] DateTime dateForecast, [FromQuery] double forecast)
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+            var valuesHolder = new ValuesHolder();
+            valuesHolder.AddForecast(dateForecast, forecast);
+            return Ok(valuesHolder.MyToString());
+        }
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        [HttpGet("read")]
+        public IActionResult Read([FromQuery] DateTime startDateRange, [FromQuery] DateTime endDateRange)
         {
-            _logger = logger;
+            var valuesHolder = new ValuesHolder();
+            valuesHolder.GetForecastByRange(startDateRange, endDateRange);
+            return Ok(valuesHolder.MyToString());
+        }
+
+        [HttpPut("update")]
+        public IActionResult Update([FromQuery] DateTime dateToUpdate, [FromQuery] double newVal)
+        {
+            var valuesHolder = new ValuesHolder();
+            valuesHolder.UpdateForecast(dateToUpdate, newVal);
+            return Ok(valuesHolder.MyToString());
+        }
+
+        [HttpDelete("delete")]
+        public IActionResult Delete([FromQuery] DateTime startDateForDelete, [FromQuery] DateTime endDateToDelete)
+        {
+            var valuesHolder = new ValuesHolder();
+            valuesHolder.DeleteForecast(startDateForDelete, endDateToDelete);
+            return Ok(valuesHolder.MyToString());
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public string Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return "JustAnswer";
         }
     }
+
 }
