@@ -49,7 +49,7 @@ namespace Lesson1Test2
         /// <summary>
         /// Добавление нового прогноза
         /// </summary>
-        public List<DataHolder> AddDataHolder(string newForecast)
+        /*public List<DataHolder> AddDataHolder(string newForecast)
         {
             Values = new List<DataHolder>();
             Values = JsonDeserialize();
@@ -64,7 +64,7 @@ namespace Lesson1Test2
             UpdateJson();
 
             return Values;
-        }
+        }*/
 
         /// <summary>
         /// Получение пути файла Json
@@ -92,7 +92,7 @@ namespace Lesson1Test2
         }
         
 
-        public List<DataHolder> UpdateForecast(string dateToUpdate, string newVal)
+        /*public List<DataHolder> UpdateForecast(string dateToUpdate, string newVal)
         {
             Values = JsonDeserialize();
 
@@ -108,9 +108,9 @@ namespace Lesson1Test2
             UpdateJson();
 
             return Values;
-        }
+        }*/
 
-        public List<DataHolder> DeleteForecast(string dateForDelete)
+        /*public List<DataHolder> DeleteForecast(string dateForDelete)
         {
             Values = JsonDeserialize();
 
@@ -119,16 +119,69 @@ namespace Lesson1Test2
             UpdateJson();
 
             return Values;
-        }
+        }*/
 
         public string MyToString()
         {
             var rez = "";
             foreach (var dataHolder in Values)
             {
-                rez += $"For date {dataHolder.DateForecast} temp is {dataHolder.Forecast}; \n";
+                rez += $"For date {dataHolder.DateForecast.ToShortDateString()} temp is {dataHolder.Forecast}; \n";
             }
             return rez;
+        }
+
+
+        public List<DataHolder> AddDataHolder(DateTime dateForecast, double forecast)
+        {
+            Values = new List<DataHolder>();
+            Values = JsonDeserialize();
+
+            var dataHolder = new DataHolder()
+            {
+                DateForecast = dateForecast,
+                Forecast = forecast
+            };
+
+            Values.Add(dataHolder);
+            UpdateJson();
+
+            return Values;
+        }
+
+        public List<DataHolder> DeleteForecast(DateTime sDateForDelete, DateTime eDateToDelete)
+        {
+            Values = JsonDeserialize();
+
+            Values = Values.Where(w => (w.DateForecast <= sDateForDelete || w.DateForecast >= eDateToDelete)).ToList();
+
+            UpdateJson();
+
+            return Values;
+        }
+
+        public List<DataHolder> GetForecastByRange(DateTime sDateRange, DateTime eDateRange)
+        {
+            Values = JsonDeserialize();
+
+            Values = Values.Where(w => (w.DateForecast >= sDateRange && w.DateForecast <= eDateRange)).ToList();
+            
+            return Values;
+        }
+
+        public List<DataHolder> UpdateForecast(DateTime dateToUpdate, double newVal)
+        {
+            Values = JsonDeserialize();
+
+            foreach (var t in Values.Where(t => t.DateForecast == dateToUpdate))
+            {
+                t.Forecast = newVal;
+                break;
+            }
+
+            UpdateJson();
+
+            return Values;
         }
     }
 }
