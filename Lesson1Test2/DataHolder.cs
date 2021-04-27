@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace Lesson1Test2
+namespace MetricManager
 {
     public class DataHolder
     {
