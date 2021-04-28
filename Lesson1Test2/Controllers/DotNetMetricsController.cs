@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MetricManager.Controllers
+namespace MetricsManager.Controllers
 {
     [Route("api/metrics/dotNet")]
     [ApiController]
     public class DotNetMetricsController : ControllerBase
     {
+        [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetErrorsCount([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        {
+            return Ok();
+        }
     }
 }

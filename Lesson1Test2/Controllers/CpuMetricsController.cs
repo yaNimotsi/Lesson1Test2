@@ -12,14 +12,14 @@ namespace MetricManager.Controllers
     [ApiController]
     public class CpuMetricsController : ControllerBase
     {
-        [HttpGet("agetnt/{agentId}/from/{fromTime}/to/{totime}")]
-        public IActionResult GetMetricsFromAgetnt([FromRoute] int agentId, [FromRoute] TimeSpan fromTime,
+        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetMetricsFromAgent([FromRoute] int agentId, [FromRoute] TimeSpan fromTime,
             [FromRoute] TimeSpan toTime)
         {
             return Ok();
         }
 
-        [HttpGet("agetnt/{agentId}/from/{fromTime}/to/{totime}/percentiles/{percentile}")]
+        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
         public IActionResult GetMetricsByPercentileFromAgent([FromRoute] int agentId, [FromRoute] TimeSpan fromTime,
             [FromRoute] TimeSpan toTime)
         {
@@ -40,5 +40,4 @@ namespace MetricManager.Controllers
             return Ok();
         }
     }
- 
 }

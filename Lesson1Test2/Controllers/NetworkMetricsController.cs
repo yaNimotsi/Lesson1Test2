@@ -1,16 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MetricManager.Controllers
+namespace MetricsManager.Controllers
 {
     [Route("api/metrics/network")]
     [ApiController]
     public class NetworkMetricsController : ControllerBase
     {
+        [HttpGet("/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetNetworkData([FromRoute] TimeSpan fromTime,
+            [FromRoute] TimeSpan toTime)
+        {
+            return Ok();
+        }
     }
 }
