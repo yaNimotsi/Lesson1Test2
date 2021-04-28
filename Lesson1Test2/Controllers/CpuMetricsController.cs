@@ -2,7 +2,7 @@
 
 using System;
 
-namespace MetricManager.Controllers
+namespace MetricsManager.Controllers
 {
     [Route("api/metrics/cpu")]
     [ApiController]
