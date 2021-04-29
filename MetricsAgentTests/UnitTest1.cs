@@ -3,7 +3,7 @@ using MetricsManager.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
-namespace MetricsManagerTests
+namespace MetricsAgentTests
 {
     public class CpuControllerUnitTests
     {
