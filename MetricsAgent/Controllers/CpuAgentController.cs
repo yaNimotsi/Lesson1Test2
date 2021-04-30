@@ -14,12 +14,5 @@ namespace MetricsAgent.Controllers
         {
             return Ok();
         }
-
-        [HttpGet("claster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllClaster([FromRoute] TimeSpan fromTime,
-            [FromRoute] TimeSpan toTime)
-        {
-            return Ok();
-        }
     }
 }
