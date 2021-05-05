@@ -76,10 +76,24 @@ namespace MetricsManagerTests
         }
 
         [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
+        public void GetFreeDiskSpace_RetunsOk()
         {
             //Act
             var result = controller.GetFreeDiskSpace();
+
+            //Assert
+            _ = Assert.IsAssignableFrom<IActionResult>(result);
+        }
+        [Fact]
+        public void GetFreeDiskForPeriodOfTime_RetunsOk()
+        {
+            var agentId = 1;
+
+            var fromTime = TimeSpan.FromSeconds(0);
+            var toTime = TimeSpan.FromSeconds(100);
+
+            //Act
+            var result = controller.GetFreeDiskForPeriodOfTime(agentId, fromTime, toTime);
 
             //Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -123,6 +137,20 @@ namespace MetricsManagerTests
         {
             //Act
             var result = controller.GetFreeSpaceRum();
+
+            //Assert
+            _ = Assert.IsAssignableFrom<IActionResult>(result);
+        }
+        [Fact]
+        public void GetFreeRamForPeriodOfTime_RetunsOk()
+        {
+            var agentId = 1;
+
+            var fromTime = TimeSpan.FromSeconds(0);
+            var toTime = TimeSpan.FromSeconds(100);
+
+            //Act
+            var result = controller.GetFreeRamForPeriodOfTime(agentId, fromTime, toTime);
 
             //Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);

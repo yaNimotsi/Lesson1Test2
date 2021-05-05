@@ -84,6 +84,20 @@ namespace MetricsAgentTests
             //Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
+
+        [Fact]
+        public void GetFreeDiskSpaceForPeriod_RetunsOk()
+        {
+            var agentId = 1;
+            var fromTime = TimeSpan.FromSeconds(0);
+            var toTime = TimeSpan.FromSeconds(100);
+
+            //Act
+            var result = controller.GetFreeDiskForPeriodOfTime(agentId, toTime, toTime);
+            //Assert
+            _ = Assert.IsAssignableFrom<IActionResult>(result);
+
+        }
     }
 
     public class NetWorkMetricsControllerUnitTests
@@ -126,6 +140,19 @@ namespace MetricsAgentTests
 
             //Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
+        }
+        [Fact]
+        public void GetFreeRamForPeriodOfTime_RetunsOk()
+        {
+            var agentId = 1;
+            var fromTime = TimeSpan.FromSeconds(0);
+            var toTime = TimeSpan.FromSeconds(100);
+
+            //Act
+            var result = controller.GetFreeRamForPeriodOfTime(agentId, toTime, toTime);
+            //Assert
+            _ = Assert.IsAssignableFrom<IActionResult>(result);
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsManager.Controllers
 {
@@ -8,6 +9,12 @@ namespace MetricsManager.Controllers
     {
         [HttpGet("available")]
         public IActionResult GetFreeSpaceRum()
+        {
+            return Ok();
+        }
+        [HttpGet("agentId/{agetnId}from/{fromTime}/to/{toTime}")]
+        public IActionResult GetFreeRamForPeriodOfTime([FromRoute] int agetnId, [FromRoute] TimeSpan fromTime,
+            [FromRoute] TimeSpan toTime)
         {
             return Ok();
         }

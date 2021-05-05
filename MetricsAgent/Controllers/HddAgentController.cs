@@ -13,5 +13,11 @@ namespace MetricsAgent.Controllers
         {
             return Ok();
         }
+        [HttpGet("from/{fromTime}/to/{toTime}")]
+        public IActionResult GetFreeDiskForPeriodOfTime([FromRoute] TimeSpan fromTime,
+            [FromRoute] TimeSpan toTime)
+        {
+            return Ok();
+        }
     }
 }

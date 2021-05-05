@@ -13,5 +13,11 @@ namespace MetricsAgent.Controllers
         {
             return Ok();
         }
+        [HttpGet("from/{fromTime}/to/{toTime}")]
+        public IActionResult GetFreeRamForPeriodOfTime([FromRoute] TimeSpan fromTime,
+            [FromRoute] TimeSpan toTime)
+        {
+            return Ok();
+        }
     }
 }
