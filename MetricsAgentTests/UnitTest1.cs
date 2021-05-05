@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
 namespace MetricsAgentTests
-{
+{ 
     public class CpuControllerUnitTests
     {
         private CpuMetricsController controller;
