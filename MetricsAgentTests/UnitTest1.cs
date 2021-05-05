@@ -7,7 +7,7 @@ namespace MetricsAgentTests
 { 
     public class CpuControllerUnitTests
     {
-        private CpuMetricsController controller;
+        /*private CpuMetricsController controller;
 
         public CpuControllerUnitTests()
         {
@@ -35,12 +35,12 @@ namespace MetricsAgentTests
             var toTime = TimeSpan.FromSeconds(100);
 
             //Act
-            var result = controller.GetMetricsFromAllClaster(fromTime, toTime);
+            var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
 
             //Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
-
+        */
     }
 
     public class DotNetControllerUnitTests
