@@ -3,6 +3,9 @@
 using System;
 using System.Collections.Generic;
 using MetricsAgent.Requests;
+using Microsoft.Extensions.Logging;
+using NLog;
+using ILogger = NLog.ILogger;
 
 namespace MetricsAgent.Controllers
 {
@@ -10,16 +13,20 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class CpuAgentController : ControllerBase
     {
+        private readonly ILogger<CpuAgentController> _logger;
         private ICpuMetricsRepository repository;
 
-        public CpuAgentController(ICpuMetricsRepository repository)
+        public CpuAgentController(ILogger<CpuAgentController> logger, ICpuMetricsRepository repository)
         {
+            _logger = logger;
+            _logger.LogDebug("NLog in CpuAgentController");
             this.repository = repository;
         }
 
         [HttpPost("post")]
         public IActionResult Create([FromBody] CpuMetricCreateRequest request)
         {
+            _logger.LogInformation("Start method Create in CpuAgentController");
             repository.Create(new CpuMetric
             {
                 Time = request.Time,
@@ -31,6 +38,8 @@ namespace MetricsAgent.Controllers
         [HttpGet("all")]
         public IActionResult GetAll()
         {
+            _logger.LogInformation("Start method GetAll in CpuAgentController");
+
             var metrics = repository.GetAll();
 
             var response = new AllCpuMetricsResponse()
@@ -49,6 +58,7 @@ namespace MetricsAgent.Controllers
         public IActionResult GetMetricsAgent([FromRoute] TimeSpan fromTime,
             [FromRoute] TimeSpan toTime)
         {
+            _logger.LogInformation($"Start method GetMetricsAgent in CpuAgentController by interval {fromTime}-{toTime}");
             return Ok();
         }
     }
