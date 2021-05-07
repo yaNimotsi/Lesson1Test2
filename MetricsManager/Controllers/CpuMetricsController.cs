@@ -23,7 +23,7 @@ namespace MetricsManager.Controllers
         public IActionResult GetMetricsFromAgent([FromRoute] int agentId, [FromRoute] TimeSpan fromTime,
             [FromRoute] TimeSpan toTime)
         {
-            _logger.LogInformation("Привет! Это первое сообщение в лог");
+            _logger.LogInformation($"Получение метрик с агента {agentId}");
             return Ok();
         }
         
@@ -31,8 +31,8 @@ namespace MetricsManager.Controllers
         public IActionResult GetMetricsFromAllCluster([FromRoute] TimeSpan fromTime,
             [FromRoute] TimeSpan toTime)
         {
+            _logger.LogInformation("Получение метрик со всех агентов");
             return Ok();
         }
-        
     }
 }
