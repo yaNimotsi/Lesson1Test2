@@ -21,7 +21,7 @@ namespace MetricsManager.Controllers
         [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
         public IActionResult GetErrorsCount([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
-            _logger.LogDebug($"Получение метрик DotNetController за промежуток времени {fromTime}-{toTime}");
+            _logger.LogDebug($"Get metrics DotNetController by interval {fromTime}-{toTime}");
             return Ok();
         }
     }
