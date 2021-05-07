@@ -3,35 +3,36 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
+using MetricsAgent.DAL.Models;
 
 namespace MetricsAgent
 {
-    public interface ICpuMetricsRepository : IRepository<CpuMetric>
+    public interface IRamMetricsRepository : IRepository<RamMetrics>
     {
 
     }
-    public class CpuMetricsRepository: ICpuMetricsRepository
+    public class RamMetricsRepository: IRamMetricsRepository
     {
         private const string ConnectionString = "Data Source=metrics.db;Version=3;" +
                                                 "Pooling=true;Max Pool Size=100";
 
         
 
-        public IList<CpuMetric> GetAll()
+        public IList<RamMetrics> GetAll()
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
 
             using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "SELECT * FROM cpumetrics";
+            cmd.CommandText = "SELECT * FROM RamMetrics";
 
-            var returnList = new List<CpuMetric>();
+            var returnList = new List<RamMetrics>();
 
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    returnList.Add(new CpuMetric
+                    returnList.Add(new RamMetrics
                     {
                         Id = reader.GetInt32(0),
                         Value = reader.GetInt32(1),
@@ -43,13 +44,13 @@ namespace MetricsAgent
             return returnList;
         }
 
-        public CpuMetric GetById(int id)
+        public RamMetrics GetById(int id)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
 
             using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "SELECT * FROM cpumetrics where id=@id";
+            cmd.CommandText = "SELECT * FROM RamMetrics where id=@id";
 
             cmd.Parameters.AddWithValue("@id", id);
             cmd.Prepare();
@@ -58,7 +59,7 @@ namespace MetricsAgent
             {
                 if (reader.Read())
                 {
-                    return new CpuMetric
+                    return new RamMetrics
                     {
                         Id = reader.GetInt32(0),
                         Value = reader.GetInt32(1),
@@ -72,14 +73,14 @@ namespace MetricsAgent
             }
         }
 
-        public void Create(CpuMetric item)
+        public void Create(RamMetrics item)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
 
             using var cmd = new SQLiteCommand(connection)
             {
-                CommandText = "Insert into cpumetrics(value, time) Values" +
+                CommandText = "Insert into RamMetrics(value, time) Values" +
                               "(@value,@time)"
             };
             cmd.Parameters.AddWithValue("@value", item.Value);
@@ -90,14 +91,14 @@ namespace MetricsAgent
             cmd.ExecuteNonQuery();
         }
 
-        public void Update(CpuMetric item)
+        public void Update(RamMetrics item)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
 
             using var cmd = new SQLiteCommand(connection)
             {
-                CommandText = "Update cpumetrics Set value = @value, time = @time Where id=@id"
+                CommandText = "Update RamMetrics Set value = @value, time = @time Where id=@id"
             };
             cmd.Parameters.AddWithValue("@id", item.Id);
             cmd.Parameters.AddWithValue("@value", item.Value);
@@ -115,7 +116,7 @@ namespace MetricsAgent
 
             using var cmd = new SQLiteCommand(connection)
             {
-                CommandText = "Delete from cpumetrics where id=@id"
+                CommandText = "Delete from RamMetrics where id=@id"
             };
             cmd.Parameters.AddWithValue("@id", id);
             

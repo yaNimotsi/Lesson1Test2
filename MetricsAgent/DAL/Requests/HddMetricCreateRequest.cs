@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MetricsAgent.Requests
+namespace MetricsAgent.DAL.Requests
 {
-    public class CpuMetricCreateRequest
+    public class HddMetricCreateRequest
     {
         public TimeSpan Time { get; set; }
         public int Value { get; set; }
