@@ -1,158 +1,66 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection.PortableExecutable;
+using MetricsAgent.Controllers;
+using MetricsAgent.DAL.Models;
+using MetricsAgent.DAL.Repository;
+using MetricsAgent.DAL.Requests;
 using MetricsManager.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using NLog;
 using Xunit;
+using ILogger = NLog.ILogger;
 
 namespace MetricsAgentTests
 { 
-    public class CpuControllerUnitTests
+    public class CpuMetricsControllerUnitTests
     {
-        /*private CpuMetricsController controller;
+        private readonly CpuAgentController controller;
+        private readonly Mock<ICpuMetricsRepository> mock;
+        private Mock<ILogger<CpuAgentController>> _mockLogger;
 
-        public CpuControllerUnitTests()
+        public CpuMetricsControllerUnitTests()
         {
-            controller = new CpuMetricsController();
+            //var logger = new Mock<ILogger>();
+            mock = new Mock<ICpuMetricsRepository>();
+            //var logger = new Mock<ILogger<CpuAgentController>>();
+            var _mockLogger = new Mock<ILogger<CpuAgentController>>();
+
+            controller = new CpuAgentController(_mockLogger.Object, mock.Object);
         }
 
         [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
+        public void Create_ShouldCall_Create_From_Repository()
         {
-            var agentId = 1;
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
+            
+            mock.Setup(repository => repository.Create(It.IsAny<CpuMetric>()));
+            //mock.Setup(repository => repository.Create(It.IsAny<CpuMetric>())).Verifiable();
 
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            // выполняем действие на контроллере
+            var result = controller.Create(new CpuMetricCreateRequest() { Time = 12, Value = 50 });
 
-            //Act
-            var result = controller.GetMetricsFromAgent(agentId, fromTime, toTime);
-
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-        [Fact]
-        public void GetMetricsFromAllClaster_RetunsOk()
-        {
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-
-            //Act
-            var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
-
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-        */
-    }
-
-    public class DotNetControllerUnitTests
-    {
-        private DotNetMetricsController controller;
-
-        public DotNetControllerUnitTests()
-        {
-            controller = new DotNetMetricsController();
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            mock.Verify(repository => repository.Create(It.IsAny<CpuMetric>()), Times.AtMostOnce());
         }
 
         [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
+        public void GetAll_ShouldCall_Create_From_Repository()
         {
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
 
-            //Act
-            var result = controller.GetErrorsCount(fromTime, toTime);
+            mock.Setup(repository => repository.GetAll());
+            
 
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-    }
-
-    public class HddMetricsControllerUnitTests
-    {
-        private HddMetricsController controller;
-
-        public HddMetricsControllerUnitTests()
-        {
-            controller = new HddMetricsController();
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            mock.Verify(repository => repository.Create(It.IsAny<CpuMetric>()), Times.AtMostOnce());
         }
 
-        [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
-        {
-            //Act
-            var result = controller.GetFreeDiskSpace();
-
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-
-        [Fact]
-        public void GetFreeDiskSpaceForPeriod_RetunsOk()
-        {
-            var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-
-            //Act
-            var result = controller.GetFreeDiskForPeriodOfTime(agentId, toTime, toTime);
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-
-        }
-    }
-
-    public class NetWorkMetricsControllerUnitTests
-    {
-        private NetworkMetricsController controller;
-
-        public NetWorkMetricsControllerUnitTests()
-        {
-            controller = new NetworkMetricsController();
-        }
-
-        [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
-        {
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-
-            //Act
-            var result = controller.GetNetworkData(fromTime, toTime);
-
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-    }
-
-    public class RamMetricsControllerUnitTests
-    {
-        private RamMetricsController controller;
-
-        public RamMetricsControllerUnitTests()
-        {
-            controller = new RamMetricsController();
-        }
-
-        [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
-        {
-            //Act
-            var result = controller.GetFreeSpaceRum();
-
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-        [Fact]
-        public void GetFreeRamForPeriodOfTime_RetunsOk()
-        {
-            var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-
-            //Act
-            var result = controller.GetFreeRamForPeriodOfTime(agentId, toTime, toTime);
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-
-        }
     }
 }

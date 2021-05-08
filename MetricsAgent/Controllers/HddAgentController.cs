@@ -29,7 +29,7 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation("Start method Create in CpuAgentController");
             repository.Create(new HddMetrics
             {
-                Time = request.Time,
+                Time = Converter.ConvertToTimeSpan(request.Time),
                 Value = request.Value
             });
             return Ok();
@@ -48,7 +48,7 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new HddMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(new HddMetricDto { Time = Converter.ConvertToLong(metric.Time), Value = metric.Value, Id = metric.Id });
             }
 
             return Ok(response);

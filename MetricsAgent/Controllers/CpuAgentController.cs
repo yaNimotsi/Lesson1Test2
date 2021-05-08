@@ -32,7 +32,7 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation("Start method Create in CpuAgentController");
             repository.Create(new CpuMetric
             {
-                Time = request.Time,
+                Time = Converter.ConvertToTimeSpan(request.Time),
                 Value = request.Value
             });
             return Ok();
@@ -51,15 +51,14 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new CpuMetricDto {Time = metric.Time, Value = metric.Value, Id = metric.Id});
+                response.Metrics.Add(new CpuMetricDto {Time = Converter.ConvertToLong(metric.Time), Value = metric.Value, Id = metric.Id});
             }
 
             return Ok(response);
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsAgent([FromRoute] TimeSpan fromTime,
-            [FromRoute] TimeSpan toTime)
+        public IActionResult GetMetricsAgent([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation($"Start method GetMetricsAgent in CpuAgentController by interval {fromTime}-{toTime}");
             return Ok();
