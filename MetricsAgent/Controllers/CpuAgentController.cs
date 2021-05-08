@@ -38,6 +38,7 @@ namespace MetricsAgent.Controllers
             return Ok();
         }
 
+
         [HttpGet("all")]
         public IActionResult GetAll()
         {

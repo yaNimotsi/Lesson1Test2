@@ -56,8 +56,7 @@ namespace MetricsAgent.Controllers
 
 
         [HttpGet("/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetNetworkData([FromRoute] TimeSpan fromTime,
-            [FromRoute] TimeSpan toTime)
+        public IActionResult GetNetworkData([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation($"Start method GetNetworkData in NetworkAgentController by interval {fromTime}-{toTime}");
             return Ok();

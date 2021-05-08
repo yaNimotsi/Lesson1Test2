@@ -62,8 +62,7 @@ namespace MetricsAgent.Controllers
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetFreeDiskForPeriodOfTime([FromRoute] TimeSpan fromTime,
-            [FromRoute] TimeSpan toTime)
+        public IActionResult GetFreeDiskForPeriodOfTime([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation($"Start method GetFreeDiskForPeriodOfTime in HddAgentController by interval {fromTime}-{toTime}");
             return Ok();

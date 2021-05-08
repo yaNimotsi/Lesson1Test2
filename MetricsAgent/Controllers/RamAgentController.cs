@@ -63,8 +63,7 @@ namespace MetricsAgent.Controllers
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetFreeRamForPeriodOfTime([FromRoute] TimeSpan fromTime,
-            [FromRoute] TimeSpan toTime)
+        public IActionResult GetFreeRamForPeriodOfTime([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation($"Start method GetFreeRamForPeriodOfTime in RamAgentController by interval {fromTime}-{toTime}");
             return Ok();
