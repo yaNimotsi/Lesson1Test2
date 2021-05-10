@@ -14,33 +14,21 @@ namespace MetricsAgent.Controllers
     public class HddAgentController : ControllerBase
     {
         private readonly ILogger<HddAgentController> _logger;
-        private IHddMetricsRepository repository;
+        private IHddMetricsRepository _repository;
 
         public HddAgentController(ILogger<HddAgentController> logger, IHddMetricsRepository repository)
         {
             _logger = logger;
             _logger.LogDebug("NLog in DotNetAgentController");
-            this.repository = repository;
+            this._repository = repository;
         }
 
-        [HttpPost("post")]
-        public IActionResult Create([FromBody] HddMetricCreateRequest request)
+        [HttpGet("byPeriod")]
+        public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
-            _logger.LogInformation("Start method Create in CpuAgentController");
-            repository.Create(new HddMetrics
-            {
-                Time = Converter.ConvertToTimeSpan(request.Time),
-                Value = request.Value
-            });
-            return Ok();
-        }
+            _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
 
-        [HttpGet("all")]
-        public IActionResult GetAll()
-        {
-            _logger.LogInformation("Start method GetAll in CpuAgentController");
-
-            var metrics = repository.GetAll();
+            var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 
             var response = new AllHddMetricsResponse()
             {
@@ -48,24 +36,10 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new HddMetricDto { Time = Converter.ConvertToLong(metric.Time), Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(new HddMetricDto() { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
             }
 
             return Ok(response);
-        }
-
-        [HttpGet("left")]
-        public IActionResult GetFreeDiskSpace()
-        {
-            _logger.LogInformation("Start method GetFreeDiskSpace in HddAgentController");
-            return Ok();
-        }
-
-        [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetFreeDiskForPeriodOfTime([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
-        {
-            _logger.LogInformation($"Start method GetFreeDiskForPeriodOfTime in HddAgentController by interval {fromTime}-{toTime}");
-            return Ok();
         }
     }
 }

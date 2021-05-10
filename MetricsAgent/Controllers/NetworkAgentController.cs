@@ -14,33 +14,21 @@ namespace MetricsAgent.Controllers
     public class NetworkAgentController : ControllerBase
     {
         private readonly ILogger<NetworkAgentController> _logger;
-        private INetworkMetricsRepository repository;
+        private readonly INetworkMetricsRepository _repository;
 
         public NetworkAgentController(ILogger<NetworkAgentController> logger, INetworkMetricsRepository repository)
         {
             _logger = logger;
             _logger.LogDebug("NLog in NetworkAgentController");
-            this.repository = repository;
+            this._repository = repository;
         }
 
-        [HttpPost("post")]
-        public IActionResult Create([FromBody] NetworkMetricCreateRequest request)
+        [HttpGet("byPeriod")]
+        public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
-            _logger.LogInformation("Start method Create in CpuAgentController");
-            repository.Create(new NetworkMetrics()
-            {
-                Time = Converter.ConvertToTimeSpan(request.Time),
-                Value = request.Value
-            });
-            return Ok();
-        }
+            _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
 
-        [HttpGet("all")]
-        public IActionResult GetAll()
-        {
-            _logger.LogInformation("Start method GetAll in CpuAgentController");
-
-            var metrics = repository.GetAll();
+            var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 
             var response = new AllNetworkMetricsResponse()
             {
@@ -48,18 +36,10 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new NetworkMetricDto { Time = Converter.ConvertToLong(metric.Time), Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(new NetworkMetricDto() { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
             }
 
             return Ok(response);
-        }
-
-
-        [HttpGet("/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetNetworkData([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
-        {
-            _logger.LogInformation($"Start method GetNetworkData in NetworkAgentController by interval {fromTime}-{toTime}");
-            return Ok();
         }
     }
 }

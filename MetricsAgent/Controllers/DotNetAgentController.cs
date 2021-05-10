@@ -15,33 +15,20 @@ namespace MetricsAgent.Controllers
     public class DotNetAgentController : ControllerBase
     {
         private readonly ILogger<DotNetAgentController> _logger;
-        private IDotNetMetricsRepository repository;
+        private IDotNetMetricsRepository _repository;
 
         public DotNetAgentController(ILogger<DotNetAgentController> logger, IDotNetMetricsRepository repository)
         {
             _logger = logger;
             _logger.LogDebug("NLog in DotNetAgentController");
-            this.repository = repository;
+            this._repository = repository;
         }
-
-        [HttpPost("post")]
-        public IActionResult Create([FromBody] DotNetMetricCreateRequest request)
+        [HttpGet("byPeriod")]
+        public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
-            _logger.LogInformation("Start method Create in DotNetAgentController");
-            repository.Create(new DotNetMetrics()
-            {
-                Time = Converter.ConvertToTimeSpan(request.Time),
-                Value = request.Value
-            });
-            return Ok();
-        }
+            _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
 
-        [HttpGet("all")]
-        public IActionResult GetAll()
-        {
-            _logger.LogInformation("Start method GetAll in CpuAgentController");
-
-            var metrics = repository.GetAll();
+            var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 
             var response = new AllDotNetMetricsResponse()
             {
@@ -49,17 +36,10 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new DotNetMetricDto { Time = Converter.ConvertToLong(metric.Time), Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(new DotNetMetricDto { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
             }
 
             return Ok(response);
-        }
-
-        [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetErrorsCount([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
-        {
-            _logger.LogInformation("Start method GetErrorsCount in DotNetAgentController");
-            return Ok();
         }
     }
 }
