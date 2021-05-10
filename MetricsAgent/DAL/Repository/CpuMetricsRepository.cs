@@ -12,7 +12,7 @@ namespace MetricsAgent.DAL.Repository
 
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
-        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100";
+        private static readonly string ConnectionString = ConnToDB.ConnectionString;
 
         public void Create(CpuMetrics item)
         {

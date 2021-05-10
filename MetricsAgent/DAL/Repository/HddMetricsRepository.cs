@@ -13,7 +13,7 @@ namespace MetricsAgent
     }
     public class HddMetricsRepository: IHddMetricsRepository
     {
-        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100";
+        private static readonly string ConnectionString = ConnToDB.ConnectionString;
 
         public List<HddMetrics> GetByTimePeriod(DateTimeOffset startTimeSpan, DateTimeOffset endTimeSpan)
         {
