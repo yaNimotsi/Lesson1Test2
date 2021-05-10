@@ -48,7 +48,7 @@ namespace MetricsAgent
 
                 //create new table
                 command.CommandText = @"CREATE TABLE CpuMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
-                command.ExecuteNonQuery();
+                command.ExecuteNonQuery(); 
 
                 //Add some fake data in db
                 command.CommandText = "INSERT INTO CpuMetrics VALUES(1,10,1617223300000)";
