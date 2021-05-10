@@ -2,7 +2,7 @@
 
 namespace MetricsAgent.DAL.Models
 {
-    public class CpuMetric
+    public class CpuMetrics
     {
         public int Id { get; set; }
         public int Value { get; set; }

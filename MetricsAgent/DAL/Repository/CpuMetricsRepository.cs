@@ -5,7 +5,7 @@ using MetricsAgent.DAL.Models;
 
 namespace MetricsAgent.DAL.Repository
 {
-    public interface ICpuMetricsRepository : IRepository<CpuMetric>
+    public interface ICpuMetricsRepository : IRepository<CpuMetrics>
     {
 
     }
@@ -14,7 +14,7 @@ namespace MetricsAgent.DAL.Repository
     {
         private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100";
 
-        public void Create(CpuMetric item)
+        public void Create(CpuMetrics item)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
@@ -31,7 +31,7 @@ namespace MetricsAgent.DAL.Repository
             cmd.ExecuteNonQuery();
         }
 
-        public List<CpuMetric> GetByTimePeriod(DateTimeOffset startTimeSpan, DateTimeOffset endTimeSpan)
+        public List<CpuMetrics> GetByTimePeriod(DateTimeOffset startTimeSpan, DateTimeOffset endTimeSpan)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
@@ -45,13 +45,13 @@ namespace MetricsAgent.DAL.Repository
 
             cmd.Prepare();
 
-            var returnList = new List<CpuMetric>();
+            var returnList = new List<CpuMetrics>();
 
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    returnList.Add(new CpuMetric()
+                    returnList.Add(new CpuMetrics()
                     {
                         Id = reader.GetInt32(0),
                         Value = reader.GetInt32(1),
