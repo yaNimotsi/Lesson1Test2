@@ -43,23 +43,90 @@ namespace MetricsAgent
             using (var command = new SQLiteCommand(connection))
             {
                 //remove old table if exists
-                command.CommandText = "DROP TABLE IF EXISTS cpumetrics";
+                command.CommandText = "DROP TABLE IF EXISTS CpuMetrics";
                 command.ExecuteNonQuery();
 
                 //create new table
-                command.CommandText = @"CREATE TABLE cpumetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.CommandText = @"CREATE TABLE CpuMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
                 command.ExecuteNonQuery();
 
                 //Add some fake data in db
-                command.CommandText = "INSERT INTO cpumetrics VALUES(1,10,1617223300000)";
+                command.CommandText = "INSERT INTO CpuMetrics VALUES(1,10,1617223300000)";
                 command.ExecuteNonQuery();
-                command.CommandText = "INSERT INTO cpumetrics VALUES(2,20,1617223500000)";
+                command.CommandText = "INSERT INTO CpuMetrics VALUES(2,20,1617223500000)";
                 command.ExecuteNonQuery();
-                command.CommandText = "INSERT INTO cpumetrics VALUES(3,30,1617225000000)";
+                command.CommandText = "INSERT INTO CpuMetrics VALUES(3,30,1617225000000)";
                 command.ExecuteNonQuery();
-                command.CommandText = "INSERT INTO cpumetrics VALUES(4,40,1617664400000)";
+                command.CommandText = "INSERT INTO CpuMetrics VALUES(4,40,1617664400000)";
                 command.ExecuteNonQuery();
-                command.CommandText = "INSERT INTO cpumetrics VALUES(5,50,1620766900000)";
+                command.CommandText = "INSERT INTO CpuMetrics VALUES(5,50,1620766900000)";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "DROP TABLE IF EXISTS CpuMetrics";
+                command.ExecuteNonQuery();
+
+                //create new table
+                command.CommandText = @"CREATE TABLE DotNetMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.ExecuteNonQuery();
+
+                //Add some fake data in db
+                command.CommandText = "INSERT INTO DotNetMetrics VALUES(1,10,1617223300000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO DotNetMetrics VALUES(2,20,1617223500000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO DotNetMetrics VALUES(3,30,1617225000000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO DotNetMetrics VALUES(4,40,1617664400000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO DotNetMetrics VALUES(5,50,1620766900000)";
+                command.ExecuteNonQuery();
+
+                //create new table
+                command.CommandText = @"CREATE TABLE HddMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.ExecuteNonQuery();
+
+                //Add some fake data in db
+                command.CommandText = "INSERT INTO HddMetrics VALUES(1,10,1617223300000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO HddMetrics VALUES(2,20,1617223500000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO HddMetrics VALUES(3,30,1617225000000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO HddMetrics VALUES(4,40,1617664400000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO HddMetrics VALUES(5,50,1620766900000)";
+                command.ExecuteNonQuery();
+
+                //create new table
+                command.CommandText = @"CREATE TABLE NetworkMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.ExecuteNonQuery();
+
+                //Add some fake data in db
+                command.CommandText = "INSERT INTO NetworkMetrics VALUES(1,10,1617223300000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO NetworkMetrics VALUES(2,20,1617223500000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO NetworkMetrics VALUES(3,30,1617225000000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO NetworkMetrics VALUES(4,40,1617664400000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO NetworkMetrics VALUES(5,50,1620766900000)";
+                command.ExecuteNonQuery();
+
+                //create new table
+                command.CommandText = @"CREATE TABLE RamMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.ExecuteNonQuery();
+
+                //Add some fake data in db
+                command.CommandText = "INSERT INTO RamMetrics VALUES(1,10,1617223300000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO RamMetrics VALUES(2,20,1617223500000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO RamMetrics VALUES(3,30,1617225000000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO RamMetrics VALUES(4,40,1617664400000)";
+                command.ExecuteNonQuery();
+                command.CommandText = "INSERT INTO RamMetrics VALUES(5,50,1620766900000)";
                 command.ExecuteNonQuery();
             }
         }
