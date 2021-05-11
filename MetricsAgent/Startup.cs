@@ -47,7 +47,7 @@ namespace MetricsAgent
                 command.ExecuteNonQuery();
 
                 //create new table
-                command.CommandText = @"CREATE TABLE CpuMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.CommandText = @"CREATE TABLE CpuMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT64)";
                 command.ExecuteNonQuery(); 
 
                 //Add some fake data in db
@@ -66,7 +66,7 @@ namespace MetricsAgent
                 command.ExecuteNonQuery();
 
                 //create new table
-                command.CommandText = @"CREATE TABLE DotNetMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.CommandText = @"CREATE TABLE DotNetMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT64)";
                 command.ExecuteNonQuery();
 
                 //Add some fake data in db
@@ -84,7 +84,7 @@ namespace MetricsAgent
                 command.CommandText = "DROP TABLE IF EXISTS HddMetrics";
                 command.ExecuteNonQuery();
                 //create new table
-                command.CommandText = @"CREATE TABLE HddMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.CommandText = @"CREATE TABLE HddMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT64)";
                 command.ExecuteNonQuery();
 
                 //Add some fake data in db
@@ -102,7 +102,7 @@ namespace MetricsAgent
                 command.CommandText = "DROP TABLE IF EXISTS NetworkMetrics";
                 command.ExecuteNonQuery();
                 //create new table
-                command.CommandText = @"CREATE TABLE NetworkMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.CommandText = @"CREATE TABLE NetworkMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT64)";
                 command.ExecuteNonQuery();
 
                 //Add some fake data in db
@@ -120,7 +120,7 @@ namespace MetricsAgent
                 command.CommandText = "DROP TABLE IF EXISTS RamMetrics";
                 command.ExecuteNonQuery();
                 //create new table
-                command.CommandText = @"CREATE TABLE RamMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
+                command.CommandText = @"CREATE TABLE RamMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT64)";
                 command.ExecuteNonQuery();
 
                 //Add some fake data in db
