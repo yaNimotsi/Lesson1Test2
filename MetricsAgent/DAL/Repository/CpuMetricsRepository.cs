@@ -15,12 +15,7 @@ namespace MetricsAgent.DAL.Repository
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
         private static readonly string ConnectionString = ConnToDB.ConnectionString;
-
-        public CpuMetricsRepository()
-        {
-            //SqlMapper.AddTypeHandler(new LongHandler.LongHandler());
-        }
-
+        
         public void Create(CpuMetrics item)
         {
             using (var connection = new SQLiteConnection(ConnectionString))

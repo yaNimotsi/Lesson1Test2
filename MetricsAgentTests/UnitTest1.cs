@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection.PortableExecutable;
+using AutoMapper;
 using MetricsAgent;
 using MetricsAgent.Controllers;
 using MetricsAgent.DAL.Models;
@@ -20,13 +21,15 @@ namespace MetricsAgentTests
     {
         private readonly CpuAgentController _controller;
         private readonly Mock<ICpuMetricsRepository> _mock;
+        private readonly Mock<IMapper> _mockMapper;
 
         public CpuMetricsControllerUnitTests()
         {
             _mock = new Mock<ICpuMetricsRepository>();
             var mockLogger = new Mock<ILogger<CpuAgentController>>();
+            _mockMapper = new Mock<IMapper>();
 
-            _controller = new CpuAgentController(mockLogger.Object, _mock.Object);
+            _controller = new CpuAgentController(mockLogger.Object, _mock.Object, _mockMapper.Object);
         }
 
         [Fact]
