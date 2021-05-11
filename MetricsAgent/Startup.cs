@@ -81,6 +81,8 @@ namespace MetricsAgent
                 command.CommandText = "INSERT INTO DotNetMetrics VALUES(5,50,1620766900000)";
                 command.ExecuteNonQuery();
 
+                command.CommandText = "DROP TABLE IF EXISTS HddMetrics";
+                command.ExecuteNonQuery();
                 //create new table
                 command.CommandText = @"CREATE TABLE HddMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
                 command.ExecuteNonQuery();
@@ -97,6 +99,8 @@ namespace MetricsAgent
                 command.CommandText = "INSERT INTO HddMetrics VALUES(5,50,1620766900000)";
                 command.ExecuteNonQuery();
 
+                command.CommandText = "DROP TABLE IF EXISTS NetworkMetrics";
+                command.ExecuteNonQuery();
                 //create new table
                 command.CommandText = @"CREATE TABLE NetworkMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
                 command.ExecuteNonQuery();
@@ -113,6 +117,8 @@ namespace MetricsAgent
                 command.CommandText = "INSERT INTO NetworkMetrics VALUES(5,50,1620766900000)";
                 command.ExecuteNonQuery();
 
+                command.CommandText = "DROP TABLE IF EXISTS RamMetrics";
+                command.ExecuteNonQuery();
                 //create new table
                 command.CommandText = @"CREATE TABLE RamMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT)";
                 command.ExecuteNonQuery();
