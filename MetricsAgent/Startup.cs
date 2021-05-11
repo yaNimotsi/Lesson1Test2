@@ -62,7 +62,7 @@ namespace MetricsAgent
                 command.CommandText = "INSERT INTO CpuMetrics VALUES(5,50,1620766900000)";
                 command.ExecuteNonQuery();
 
-                command.CommandText = "DROP TABLE IF EXISTS CpuMetrics";
+                command.CommandText = "DROP TABLE IF EXISTS DotNetMetrics";
                 command.ExecuteNonQuery();
 
                 //create new table
