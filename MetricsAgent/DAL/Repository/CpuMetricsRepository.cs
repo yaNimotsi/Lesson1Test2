@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 using MetricsAgent.DAL.Models;
+using Dapper;
 
 namespace MetricsAgent.DAL.Repository
 {
@@ -14,52 +16,35 @@ namespace MetricsAgent.DAL.Repository
     {
         private static readonly string ConnectionString = ConnToDB.ConnectionString;
 
-        public void Create(CpuMetrics item)
+        public CpuMetricsRepository()
         {
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
-
-            using var cmd = new SQLiteCommand(connection)
-            {
-                CommandText = "Insert into CpuMetrics(value, time) Values(@value,@time)"
-            };
-            cmd.Parameters.AddWithValue("@value", item.Value);
-            cmd.Parameters.AddWithValue("@time", item.Time.ToString());
-
-            cmd.Prepare();
-
-            cmd.ExecuteNonQuery();
+            //SqlMapper.AddTypeHandler(new LongHandler.LongHandler());
         }
 
-        public List<CpuMetrics> GetByTimePeriod(DateTimeOffset startTimeSpan, DateTimeOffset endTimeSpan)
+        public void Create(CpuMetrics item)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
-
-            using var cmd = new SQLiteCommand(connection)
+            using (var connection = new SQLiteConnection(ConnectionString))
             {
-                CommandText = "SELECT id,value, time FROM CpuMetrics WHERE time >= @startPeriod and time <= @endPeriod"
-            };
-            cmd.Parameters.AddWithValue("@startPeriod", startTimeSpan.ToUnixTimeMilliseconds());
-            cmd.Parameters.AddWithValue("@endPeriod", endTimeSpan.ToUnixTimeMilliseconds());
-
-            cmd.Prepare();
-
-            var returnList = new List<CpuMetrics>();
-
-            using (SQLiteDataReader reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    returnList.Add(new CpuMetrics()
+                connection.Execute("Insert into CpuMetrics(value, time) Values(@value,@time)",
+                    new
                     {
-                        Id = reader.GetInt32(0),
-                        Value = reader.GetInt32(1),
-                        Time = reader.GetInt64(2)
+                        value = item.Value,
+                        time = item.Time
                     });
-                }
             }
-            return returnList;
+        }
+
+        public List<CpuMetrics> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<CpuMetrics>("SELECT id, value, time FROM CpuMetrics WHERE time >= @fromTime AND time <= @toTime",
+                    new
+                    {
+                        fromTime = fromTime.ToUnixTimeMilliseconds(),
+                        toTime = toTime.ToUnixTimeMilliseconds()
+                    }).ToList();
+            }
         }
     }
 }

@@ -25,18 +25,19 @@ namespace MetricsAgent.Controllers
             _logger.LogDebug("NLog in CpuAgentController");
             this._repository = repository;
         }
-        
+
         [HttpGet("byPeriod")]
         public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
             _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
-            
+
             var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 
             var response = new AllCpuMetricsResponse()
             {
                 Metrics = new List<CpuMetricDto>()
             };
+
             foreach (var metric in metrics)
             {
                 response.Metrics.Add(new CpuMetricDto { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
