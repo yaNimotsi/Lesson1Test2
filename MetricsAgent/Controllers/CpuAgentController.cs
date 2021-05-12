@@ -33,9 +33,6 @@ namespace MetricsAgent.Controllers
         public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
             _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
-
-
-            
             
             var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 

@@ -14,6 +14,10 @@ namespace MetricsAgent
         {
             CreateMap<long, DateTimeOffset>().ConvertUsing(new DateTimeOffsetConverter());
             CreateMap<CpuMetrics, CpuMetricDto>();
+            CreateMap<HddMetrics, HddMetricDto>();
+            CreateMap<NetworkMetrics, NetworkMetricDto>();
+            CreateMap<DotNetMetrics, DotNetMetricDto>();
+            CreateMap<RamMetrics, RamMetricDto>();
         }
     }
 }
