@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Dapper;
+
+using MetricsAgent.DAL.Models;
+
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
-using System.Threading.Tasks;
-using Dapper;
-using MetricsAgent.DAL.Models;
 
 namespace MetricsAgent
 {
