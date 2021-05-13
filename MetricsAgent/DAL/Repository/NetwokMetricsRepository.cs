@@ -1,13 +1,11 @@
-﻿using Dapper;
-
-using MetricsAgent.DAL.Models;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
+using Dapper;
+using MetricsAgent.DAL.Models;
 
-namespace MetricsAgent
+namespace MetricsAgent.DAL.Repository
 {
     public interface INetworkMetricsRepository : IRepository<NetworkMetrics>
     {
