@@ -1,158 +1,248 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection.PortableExecutable;
+using MetricsAgent;
+using MetricsAgent.Controllers;
+using MetricsAgent.DAL.Models;
+using MetricsAgent.DAL.Repository;
+using MetricsAgent.DAL.Requests;
 using MetricsManager.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using NLog;
 using Xunit;
+using ILogger = NLog.ILogger;
 
 namespace MetricsAgentTests
-{
-    public class CpuControllerUnitTests
+{ 
+    public class CpuMetricsControllerUnitTests
     {
-        private CpuMetricsController controller;
+        private readonly CpuAgentController _controller;
+        private readonly Mock<ICpuMetricsRepository> _mock;
 
-        public CpuControllerUnitTests()
+        public CpuMetricsControllerUnitTests()
         {
-            controller = new CpuMetricsController();
+            _mock = new Mock<ICpuMetricsRepository>();
+            var mockLogger = new Mock<ILogger<CpuAgentController>>();
+
+            _controller = new CpuAgentController(mockLogger.Object, _mock.Object);
         }
 
         [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
+        public void Create_ShouldCall_Create_From_Repository()
         {
-            var agentId = 1;
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
 
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            _mock.Setup(repository => repository.Create(It.IsAny<CpuMetrics>()));
 
-            //Act
-            var result = controller.GetMetricsFromAgent(agentId, fromTime, toTime);
+            // выполняем действие на контроллере
+            //var result = _controller.Create(new DotNetMetricCreateRequest() { Time = 12, Value = 50 });
 
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.Create(It.IsAny<CpuMetrics>()), Times.AtMostOnce());
         }
         [Fact]
-        public void GetMetricsFromAllClaster_RetunsOk()
+        public void GetByTimePeriod_ShouldCall_Create_From_Repository()
         {
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
+            _mock.Setup(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>())).Returns(new List<CpuMetrics>());
 
-            //Act
-            var result = controller.GetMetricsFromAllClaster(fromTime, toTime);
+            var dateTimeOffset1 = DateTimeOffset.Now;
+            var dateTimeOffset2 = DateTimeOffset.Now;
+            // выполняем действие на контроллере
+            var result = _controller.GetByTimePeriod(dateTimeOffset1, dateTimeOffset2);
 
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()), Times.AtMostOnce());
         }
-
     }
 
-    public class DotNetControllerUnitTests
+    public class DotNetMetricsControllerUnitTests
     {
-        private DotNetMetricsController controller;
+        private readonly DotNetAgentController _controller;
+        private readonly Mock<IDotNetMetricsRepository> _mock;
 
-        public DotNetControllerUnitTests()
+        public DotNetMetricsControllerUnitTests()
         {
-            controller = new DotNetMetricsController();
+            _mock = new Mock<IDotNetMetricsRepository>();
+            var mockLogger = new Mock<ILogger<DotNetAgentController>>();
+
+            _controller = new DotNetAgentController(mockLogger.Object, _mock.Object);
         }
 
         [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
+        public void Create_ShouldCall_Create_From_Repository()
         {
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
 
-            //Act
-            var result = controller.GetErrorsCount(fromTime, toTime);
+            _mock.Setup(repository => repository.Create(It.IsAny<DotNetMetrics>()));
 
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            // выполняем действие на контроллере
+            //var result = _controller.Create(new DotNetMetricCreateRequest() { Time = 12, Value = 50 });
+
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.Create(It.IsAny<DotNetMetrics>()), Times.AtMostOnce());
+        }
+        [Fact]
+        public void GetByTimePeriod_ShouldCall_GetByTimePeriod_From_Repository()
+        {
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
+            _mock.Setup(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>())).Returns(new List<DotNetMetrics>());
+
+            var dateTimeOffset1 = DateTimeOffset.Now;
+            var dateTimeOffset2 = DateTimeOffset.Now;
+            // выполняем действие на контроллере
+            var result = _controller.GetByTimePeriod(dateTimeOffset1, dateTimeOffset2);
+
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()), Times.AtMostOnce());
         }
     }
 
     public class HddMetricsControllerUnitTests
     {
-        private HddMetricsController controller;
+        private readonly HddAgentController _controller;
+        private readonly Mock<IHddMetricsRepository> _mock;
 
         public HddMetricsControllerUnitTests()
         {
-            controller = new HddMetricsController();
+            _mock = new Mock<IHddMetricsRepository>();
+            var mockLogger = new Mock<ILogger<HddAgentController>>();
+
+            _controller = new HddAgentController(mockLogger.Object, _mock.Object);
         }
 
         [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
+        public void Create_ShouldCall_Create_From_Repository()
         {
-            //Act
-            var result = controller.GetFreeDiskSpace();
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
 
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            _mock.Setup(repository => repository.Create(It.IsAny<HddMetrics>()));
+
+            // выполняем действие на контроллере
+            //var result = _controller.Create(new HddMetricCreateRequest() { Time = 12, Value = 50 });
+
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.Create(It.IsAny<HddMetrics>()), Times.AtMostOnce());
         }
-
         [Fact]
-        public void GetFreeDiskSpaceForPeriod_RetunsOk()
+        public void GetByTimePeriod_ShouldCall_GetByTimePeriod_From_Repository()
         {
-            var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
+            _mock.Setup(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>())).Returns(new List<HddMetrics>());
 
-            //Act
-            var result = controller.GetFreeDiskForPeriodOfTime(agentId, toTime, toTime);
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            var dateTimeOffset1 = DateTimeOffset.Now;
+            var dateTimeOffset2 = DateTimeOffset.Now;
+            // выполняем действие на контроллере
+            var result = _controller.GetByTimePeriod(dateTimeOffset1, dateTimeOffset2);
 
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()), Times.AtMostOnce());
         }
     }
 
-    public class NetWorkMetricsControllerUnitTests
+    public class NetworkMetricsControllerUnitTests
     {
-        private NetworkMetricsController controller;
+        private readonly NetworkAgentController _controller;
+        private readonly Mock<INetworkMetricsRepository> _mock;
 
-        public NetWorkMetricsControllerUnitTests()
+        public NetworkMetricsControllerUnitTests()
         {
-            controller = new NetworkMetricsController();
+            _mock = new Mock<INetworkMetricsRepository>();
+            var mockLogger = new Mock<ILogger<NetworkAgentController>>();
+
+            _controller = new NetworkAgentController(mockLogger.Object, _mock.Object);
         }
 
         [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
+        public void Create_ShouldCall_Create_From_Repository()
         {
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
 
-            //Act
-            var result = controller.GetNetworkData(fromTime, toTime);
+            _mock.Setup(repository => repository.Create(It.IsAny<NetworkMetrics>()));
 
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            // выполняем действие на контроллере
+            //var result = _controller.Create(new NetworkMetricCreateRequest() { Time = 12, Value = 50 });
+
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.Create(It.IsAny<NetworkMetrics>()), Times.AtMostOnce());
+        }
+        [Fact]
+        public void GetByTimePeriod_ShouldCall_GetByTimePeriod_From_Repository()
+        {
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
+            _mock.Setup(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>())).Returns(new List<NetworkMetrics>());
+
+            var dateTimeOffset1 = DateTimeOffset.Now;
+            var dateTimeOffset2 = DateTimeOffset.Now;
+            // выполняем действие на контроллере
+            var result = _controller.GetByTimePeriod(dateTimeOffset1, dateTimeOffset2);
+
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()), Times.AtMostOnce());
         }
     }
 
     public class RamMetricsControllerUnitTests
     {
-        private RamMetricsController controller;
+        private readonly RamAgentController _controller;
+        private readonly Mock<IRamMetricsRepository> _mock;
 
         public RamMetricsControllerUnitTests()
         {
-            controller = new RamMetricsController();
+            _mock = new Mock<IRamMetricsRepository>();
+            var mockLogger = new Mock<ILogger<RamAgentController>>();
+
+            _controller = new RamAgentController(mockLogger.Object, _mock.Object);
         }
 
         [Fact]
-        public void GetMetricsFromAgent_RetunsOk()
+        public void Create_ShouldCall_Create_From_Repository()
         {
-            //Act
-            var result = controller.GetFreeSpaceRum();
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
 
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            _mock.Setup(repository => repository.Create(It.IsAny<RamMetrics>()));
+
+            // выполняем действие на контроллере
+            //var result = _controller.Create(new RamMetricCreateRequest() { Time = 12, Value = 50 });
+
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.Create(It.IsAny<RamMetrics>()), Times.AtMostOnce());
         }
         [Fact]
-        public void GetFreeRamForPeriodOfTime_RetunsOk()
+        public void GetByTimePeriod_ShouldCall_GetByTimePeriod_From_Repository()
         {
-            var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
+            _mock.Setup(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>())).Returns(new List<RamMetrics>());
 
-            //Act
-            var result = controller.GetFreeRamForPeriodOfTime(agentId, toTime, toTime);
-            //Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            var dateTimeOffset1 = DateTimeOffset.Now;
+            var dateTimeOffset2 = DateTimeOffset.Now;
+            // выполняем действие на контроллере
+            var result = _controller.GetByTimePeriod(dateTimeOffset1, dateTimeOffset2);
 
+            // проверяем заглушку на то, что пока работал контроллер
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            _mock.Verify(repository => repository.GetByTimePeriod(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()), Times.AtMostOnce());
         }
     }
 }

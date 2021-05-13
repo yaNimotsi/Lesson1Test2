@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using System;
+using System.Collections.Generic;
+using MetricsAgent.DAL.Models;
+using MetricsAgent.DAL.Requests;
+using MetricsAgent.Requests;
+using Microsoft.Extensions.Logging;
 
 namespace MetricsAgent.Controllers
 {
@@ -8,16 +13,33 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class HddAgentController : ControllerBase
     {
-        [HttpGet("left")]
-        public IActionResult GetFreeDiskSpace()
+        private readonly ILogger<HddAgentController> _logger;
+        private IHddMetricsRepository _repository;
+
+        public HddAgentController(ILogger<HddAgentController> logger, IHddMetricsRepository repository)
         {
-            return Ok();
+            _logger = logger;
+            _logger.LogDebug("NLog in DotNetAgentController");
+            this._repository = repository;
         }
-        [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetFreeDiskForPeriodOfTime([FromRoute] TimeSpan fromTime,
-            [FromRoute] TimeSpan toTime)
+
+        [HttpGet("byPeriod")]
+        public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
-            return Ok();
+            _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
+
+            var metrics = _repository.GetByTimePeriod(fromTime, toTime);
+
+            var response = new AllHddMetricsResponse()
+            {
+                Metrics = new List<HddMetricDto>()
+            };
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(new HddMetricDto() { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
+            }
+
+            return Ok(response);
         }
     }
 }

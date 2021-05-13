@@ -1,17 +1,23 @@
 using System;
 using MetricsManager.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Xunit;
+using ILogger = NLog.ILogger;
 
 namespace MetricsManagerTests
 {
     public class CpuControllerUnitTests
     {
         private CpuMetricsController controller;
+        private Mock<ILogger<CpuMetricsController>> loggeMock;
+        private ILogger<CpuMetricsController> logger;
 
         public CpuControllerUnitTests()
         {
-            controller = new CpuMetricsController();
+            loggeMock = new Mock<ILogger<CpuMetricsController>>();
+            controller = new CpuMetricsController(loggeMock.Object);
         }
 
         [Fact]
@@ -35,21 +41,22 @@ namespace MetricsManagerTests
             var toTime = TimeSpan.FromSeconds(100);
 
             //Act
-            var result = controller.GetMetricsFromAllClaster(fromTime, toTime);
+            var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
 
             //Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
-
+        
     }
 
     public class DotNetControllerUnitTests
     {
         private DotNetMetricsController controller;
-
+        private Mock<ILogger<DotNetMetricsController>> loggerMock;
         public DotNetControllerUnitTests()
         {
-            controller = new DotNetMetricsController();
+            loggerMock = new Mock<ILogger<DotNetMetricsController>>();
+            controller = new DotNetMetricsController(loggerMock.Object);
         }
 
         [Fact]
@@ -69,10 +76,12 @@ namespace MetricsManagerTests
     public class HddMetricsControllerUnitTests
     {
         private HddMetricsController controller;
-
+        private Mock<ILogger<HddMetricsController>> loggerMock;
+        
         public HddMetricsControllerUnitTests()
         {
-            controller = new HddMetricsController();
+            loggerMock = new Mock<ILogger<HddMetricsController>>();
+            controller = new HddMetricsController(loggerMock.Object);
         }
 
         [Fact]
@@ -103,10 +112,12 @@ namespace MetricsManagerTests
     public class NetWorkMetricsControllerUnitTests
     {
         private NetworkMetricsController controller;
+        private Mock<ILogger<NetworkMetricsController>> loggerMock;
 
         public NetWorkMetricsControllerUnitTests()
         {
-            controller = new NetworkMetricsController();
+            loggerMock = new Mock<ILogger<NetworkMetricsController>>();
+            controller = new NetworkMetricsController(loggerMock.Object);
         }
 
         [Fact]
@@ -126,10 +137,11 @@ namespace MetricsManagerTests
     public class RamMetricsControllerUnitTests
     {
         private RamMetricsController controller;
-
+        private Mock<ILogger<RamMetricsController>> loggerMock;
         public RamMetricsControllerUnitTests()
         {
-            controller = new RamMetricsController();
+            loggerMock = new Mock<ILogger<RamMetricsController>>();
+            controller = new RamMetricsController(loggerMock.Object);
         }
 
         [Fact]
