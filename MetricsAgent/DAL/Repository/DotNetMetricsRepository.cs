@@ -13,7 +13,7 @@ namespace MetricsAgent.DAL.Repository
     }
     public class DotNetMetricsRepository : IDotNetMetricsRepository
     {
-        private static readonly string ConnectionString = ConnToDB.ConnectionString;
+        private static readonly string ConnectionString = ConnectionStringToDataBase.ConnectionString;
         
         public void Create(DotNetMetrics item)
         {

@@ -14,7 +14,7 @@ namespace MetricsAgent
     }
     public class RamMetricsRepository: IRamMetricsRepository
     {
-        private static readonly string ConnectionString = ConnToDB.ConnectionString;
+        private static readonly string ConnectionString = ConnectionStringToDataBase.ConnectionString;
 
         public void Create(RamMetrics item)
         {

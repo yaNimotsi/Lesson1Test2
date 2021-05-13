@@ -14,7 +14,7 @@ namespace MetricsAgent
     }
     public class HddMetricsRepository: IHddMetricsRepository
     {
-        private static readonly string ConnectionString = ConnToDB.ConnectionString;
+        private static readonly string ConnectionString = ConnectionStringToDataBase.ConnectionString;
         
         public void Create(HddMetrics item)
         {

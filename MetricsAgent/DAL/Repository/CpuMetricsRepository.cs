@@ -14,7 +14,7 @@ namespace MetricsAgent.DAL.Repository
 
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
-        private static readonly string ConnectionString = ConnToDB.ConnectionString;
+        private static readonly string ConnectionString = ConnectionStringToDataBase.ConnectionString;
         
         public void Create(CpuMetrics item)
         {
