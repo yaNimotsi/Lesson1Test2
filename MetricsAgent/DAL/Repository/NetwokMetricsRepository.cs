@@ -13,7 +13,7 @@ namespace MetricsAgent
     }
     public class NetworkMetricsRepository: INetworkMetricsRepository
     {
-        private static readonly string ConnectionString = ConnToDB.ConnectionString;
+        private static readonly string ConnectionString = ConnectionStringToDataBase.ConnectionString;
 
         public List<NetworkMetrics> GetByTimePeriod(DateTimeOffset startTimeSpan, DateTimeOffset endTimeSpan)
         {

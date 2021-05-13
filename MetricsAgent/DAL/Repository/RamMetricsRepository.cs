@@ -13,7 +13,7 @@ namespace MetricsAgent
     }
     public class RamMetricsRepository: IRamMetricsRepository
     {
-        private static readonly string ConnectionString = ConnToDB.ConnectionString;
+        private static readonly string ConnectionString = ConnectionStringToDataBase.ConnectionString;
 
         public List<RamMetrics> GetByTimePeriod(DateTimeOffset startTimeSpan, DateTimeOffset endTimeSpan)
         {
