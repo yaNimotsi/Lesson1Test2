@@ -6,6 +6,13 @@ using Microsoft.Extensions.Hosting;
 using System.Data.SQLite;
 using AutoMapper;
 using MetricsAgent.DAL.Repository;
+using MetricsAgent.Jobs;
+using MetricsAgent.Jobs.HostedService;
+using MetricsAgent.Jobs.Jobs;
+using MetricsAgent.Jobs.Schedule;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 
 namespace MetricsAgent
 {
@@ -34,6 +41,41 @@ namespace MetricsAgent
                 mp.AddProfile(new MapperProfile()));
             var mapper = mapperConfiguration.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+
+            services.AddSingleton<CpuMetricJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType:typeof(CpuMetricJob),
+                cronExpression: "0/5 * * * * ?"
+            ));
+
+            services.AddSingleton<DotNetMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(DotNetMetricsJob),
+                cronExpression: "0/5 * * * * ?"
+            ));
+
+            services.AddSingleton<HddMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(HddMetricsJob),
+                cronExpression: "0/5 * * * * ?"
+            ));
+
+            services.AddSingleton<NetworkMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NetworkMetricsJob),
+                cronExpression: "0/5 * * * * ?"
+            ));
+
+            services.AddSingleton<RamMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(RamMetricsJob),
+                cronExpression: "0/5 * * * * ?"
+            ));
+
+            services.AddHostedService<QuartzHostedService>();
         }
 
         private void ConfigureSqlLiteConnection(IServiceCollection services)
