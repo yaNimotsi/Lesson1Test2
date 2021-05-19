@@ -12,7 +12,7 @@ namespace MetricsAgent.Jobs
     public class CpuMetricJob : IJob
     {
         private readonly ICpuMetricsRepository _repository;
-        private PerformanceCounter _cpuCounter;
+        private readonly PerformanceCounter _cpuCounter;
         public CpuMetricJob(ICpuMetricsRepository repository)
         {
             _repository = repository;

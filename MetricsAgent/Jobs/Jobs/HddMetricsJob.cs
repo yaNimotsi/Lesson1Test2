@@ -13,7 +13,7 @@ namespace MetricsAgent.Jobs.Jobs
     {
         //physical disk
         private readonly IHddMetricsRepository _repository;
-        private PerformanceCounter _hddCounter;
+        private readonly PerformanceCounter _hddCounter;
         public HddMetricsJob(IHddMetricsRepository repository)
         {
             _repository = repository;
