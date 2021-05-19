@@ -1,11 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Spi;
 
-using System;
-
-namespace MetricsAgent.Jobs
+namespace MetricsAgent.DAL.Jobs
 {
     public class SingletonJobFactory : IJobFactory
     {

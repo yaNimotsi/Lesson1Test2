@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using MetricsAgent.DAL.Models;
 using MetricsAgent.DAL.Repository;
 using Quartz;
 
-namespace MetricsAgent.Jobs.Jobs
+namespace MetricsAgent.DAL.Jobs.Jobs
 {
-    public class DotNetMetricsJob
+    public class DotNetMetricsJob : IJob
     {
         private readonly IDotNetMetricsRepository _repository;
         private readonly PerformanceCounter _dotNetCounter;

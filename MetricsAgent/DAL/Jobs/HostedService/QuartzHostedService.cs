@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MetricsAgent.Jobs.Schedule;
+using MetricsAgent.DAL.Jobs.Schedule;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Spi;
 
-namespace MetricsAgent.Jobs.HostedService
+namespace MetricsAgent.DAL.Jobs.HostedService
 {
     public class QuartzHostedService : IHostedService
     {
@@ -16,17 +14,17 @@ namespace MetricsAgent.Jobs.HostedService
         private readonly IJobFactory _jobFactory;
         private readonly IEnumerable<JobSchedule> _jobSchedules;
 
-        public IScheduler Scheduler { get; set; }
-
-        public QuartzHostedService(ISchedulerFactory schedulerFactory, IJobFactory jobFactory,
+        public QuartzHostedService(
+            ISchedulerFactory schedulerFactory,
+            IJobFactory jobFactory,
             IEnumerable<JobSchedule> jobSchedules)
         {
             _schedulerFactory = schedulerFactory;
-            _jobFactory = jobFactory;
             _jobSchedules = jobSchedules;
+            _jobFactory = jobFactory;
         }
 
-
+        public IScheduler Scheduler { get; set; }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
@@ -44,14 +42,9 @@ namespace MetricsAgent.Jobs.HostedService
             await Scheduler.Start(cancellationToken);
         }
 
-        private static ITrigger CreateTrigger(JobSchedule schedule)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            return TriggerBuilder
-                .Create()
-                .WithIdentity($"{schedule.JobType.FullName}.trigger")
-                .WithCronSchedule(schedule.CronExpression)
-                .WithDescription(schedule.CronExpression)
-                .Build();
+            await Scheduler?.Shutdown(cancellationToken);
         }
 
         private static IJobDetail CreateJobDetail(JobSchedule schedule)
@@ -63,10 +56,14 @@ namespace MetricsAgent.Jobs.HostedService
                 .WithDescription(jobType.Name)
                 .Build();
         }
-
-        public async Task StopAsync(CancellationToken cancellationToken)
+        private static ITrigger CreateTrigger(JobSchedule schedule)
         {
-            await Scheduler?.Shutdown(cancellationToken);
+            return TriggerBuilder
+                .Create()
+                .WithIdentity($"{schedule.JobType.FullName}.trigger")
+                .WithCronSchedule(schedule.CronExpression)
+                .WithDescription(schedule.CronExpression)
+                .Build();
         }
     }
 }

@@ -7,7 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace MetricsAgent.Jobs
+namespace MetricsAgent.DAL.Jobs.Jobs
 {
     public class CpuMetricJob : IJob
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MetricsAgent.Jobs.Schedule
+namespace MetricsAgent.DAL.Jobs.Schedule
 {
     public class JobSchedule
     {
