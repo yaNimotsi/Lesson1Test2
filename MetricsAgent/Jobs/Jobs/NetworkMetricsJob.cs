@@ -12,11 +12,11 @@ namespace MetricsAgent.Jobs.Jobs
     public class NetworkMetricsJob
     {
         private readonly INetworkMetricsRepository _repository;
-        private PerformanceCounter _networkCounter;
+        private readonly PerformanceCounter _networkCounter;
         public NetworkMetricsJob(INetworkMetricsRepository repository)
         {
             _repository = repository;
-            _networkCounter = new PerformanceCounter("Network Interface", "% Bytes Sent", "_Total");
+            _networkCounter = new PerformanceCounter("Network Interface", "% Bytes Sent/sec");
         }
         public Task Execute(IJobExecutionContext context)
         {

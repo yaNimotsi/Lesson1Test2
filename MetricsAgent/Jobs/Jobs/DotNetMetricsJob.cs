@@ -16,7 +16,7 @@ namespace MetricsAgent.Jobs.Jobs
         public DotNetMetricsJob(IDotNetMetricsRepository repository)
         {
             _repository = repository;
-            _dotNetCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            _dotNetCounter = new PerformanceCounter(".Net Memory Cache 4.0", "Cache Hits");
         }
         public Task Execute(IJobExecutionContext context)
         {
