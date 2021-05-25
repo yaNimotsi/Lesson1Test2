@@ -14,8 +14,8 @@ namespace MetricsAgent.DAL.Repository
 
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
-        private static readonly string ConnectionString = ConnectionStringToDataBase.ConnectionString;
-
+        private static readonly string ConnectionString = ConnToDB.ConnectionString;
+        
         public void Create(CpuMetrics item)
         {
             using (var connection = new SQLiteConnection(ConnectionString))
