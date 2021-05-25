@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using AutoMapper;
 using MetricsAgent.DAL.Models;
 using MetricsAgent.DAL.Repository;
 using MetricsAgent.DAL.Requests;
@@ -15,14 +16,17 @@ namespace MetricsAgent.Controllers
     public class DotNetAgentController : ControllerBase
     {
         private readonly ILogger<DotNetAgentController> _logger;
-        private IDotNetMetricsRepository _repository;
+        private readonly IDotNetMetricsRepository _repository;
+        private readonly IMapper mapper;
 
-        public DotNetAgentController(ILogger<DotNetAgentController> logger, IDotNetMetricsRepository repository)
+        public DotNetAgentController(ILogger<DotNetAgentController> logger, IDotNetMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug("NLog in DotNetAgentController");
             this._repository = repository;
+            this.mapper = mapper;
         }
+
         [HttpGet("byPeriod")]
         public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
@@ -36,7 +40,7 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new DotNetMetricDto { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<DotNetMetricDto>(metric));
             }
 
             return Ok(response);

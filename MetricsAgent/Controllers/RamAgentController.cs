@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using AutoMapper;
 using MetricsAgent.DAL.Models;
 using MetricsAgent.DAL.Requests;
 using MetricsAgent.Requests;
@@ -15,12 +16,14 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<RamAgentController> _logger;
         private readonly IRamMetricsRepository _repository;
+        private readonly IMapper mapper;
 
-        public RamAgentController(ILogger<RamAgentController> logger, IRamMetricsRepository repository)
+        public RamAgentController(ILogger<RamAgentController> logger, IRamMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug("NLog in NetworkAgentController");
             this._repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet("byPeriod")]
@@ -36,7 +39,7 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new RamMetricDto() { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<RamMetricDto>(metric));
             }
 
             return Ok(response);

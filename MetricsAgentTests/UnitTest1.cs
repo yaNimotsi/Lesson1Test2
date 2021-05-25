@@ -21,15 +21,24 @@ namespace MetricsAgentTests
     {
         private readonly CpuAgentController _controller;
         private readonly Mock<ICpuMetricsRepository> _mock;
+<<<<<<< HEAD
         private readonly Mock<IMapper> _mockMapper;
+=======
+        private readonly Mock<IMapper> _mockIMapper;
+>>>>>>> 5bcb79fa37e7434e1666d9d6b8ade533f11ea327
 
         public CpuMetricsControllerUnitTests()
         {
             _mock = new Mock<ICpuMetricsRepository>();
             var mockLogger = new Mock<ILogger<CpuAgentController>>();
+<<<<<<< HEAD
             _mockMapper = new Mock<IMapper>();
 
             _controller = new CpuAgentController(mockLogger.Object, _mock.Object, _mockMapper.Object);
+=======
+            _mockIMapper = new Mock<IMapper>();
+            _controller = new CpuAgentController(mockLogger.Object, _mock.Object, _mockIMapper.Object);
+>>>>>>> 5bcb79fa37e7434e1666d9d6b8ade533f11ea327
         }
 
         [Fact]
@@ -69,13 +78,15 @@ namespace MetricsAgentTests
     {
         private readonly DotNetAgentController _controller;
         private readonly Mock<IDotNetMetricsRepository> _mock;
+        private readonly Mock<IMapper> _mockIMapper;
 
         public DotNetMetricsControllerUnitTests()
         {
             _mock = new Mock<IDotNetMetricsRepository>();
             var mockLogger = new Mock<ILogger<DotNetAgentController>>();
+            _mockIMapper = new Mock<IMapper>();
 
-            _controller = new DotNetAgentController(mockLogger.Object, _mock.Object);
+            _controller = new DotNetAgentController(mockLogger.Object, _mock.Object, _mockIMapper.Object);
         }
 
         [Fact]
@@ -115,13 +126,15 @@ namespace MetricsAgentTests
     {
         private readonly HddAgentController _controller;
         private readonly Mock<IHddMetricsRepository> _mock;
+        private readonly Mock<IMapper> _mockIMapper;
 
         public HddMetricsControllerUnitTests()
         {
             _mock = new Mock<IHddMetricsRepository>();
             var mockLogger = new Mock<ILogger<HddAgentController>>();
+            _mockIMapper = new Mock<IMapper>();
 
-            _controller = new HddAgentController(mockLogger.Object, _mock.Object);
+            _controller = new HddAgentController(mockLogger.Object, _mock.Object, _mockIMapper.Object);
         }
 
         [Fact]
@@ -161,13 +174,15 @@ namespace MetricsAgentTests
     {
         private readonly NetworkAgentController _controller;
         private readonly Mock<INetworkMetricsRepository> _mock;
+        private readonly Mock<IMapper> _mockIMapper;
 
         public NetworkMetricsControllerUnitTests()
         {
             _mock = new Mock<INetworkMetricsRepository>();
             var mockLogger = new Mock<ILogger<NetworkAgentController>>();
+            _mockIMapper = new Mock<IMapper>();
 
-            _controller = new NetworkAgentController(mockLogger.Object, _mock.Object);
+            _controller = new NetworkAgentController(mockLogger.Object, _mock.Object, _mockIMapper.Object);
         }
 
         [Fact]
@@ -207,13 +222,15 @@ namespace MetricsAgentTests
     {
         private readonly RamAgentController _controller;
         private readonly Mock<IRamMetricsRepository> _mock;
+        private readonly Mock<IMapper> _mockIMapper;
 
         public RamMetricsControllerUnitTests()
         {
             _mock = new Mock<IRamMetricsRepository>();
             var mockLogger = new Mock<ILogger<RamAgentController>>();
+            _mockIMapper = new Mock<IMapper>();
 
-            _controller = new RamAgentController(mockLogger.Object, _mock.Object);
+            _controller = new RamAgentController(mockLogger.Object, _mock.Object, _mockIMapper.Object);
         }
 
         [Fact]
