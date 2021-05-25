@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using AutoMapper;
 using MetricsAgent.DAL.Models;
-using MetricsAgent.DAL.Repository;
 using MetricsAgent.DAL.Requests;
 using MetricsAgent.Requests;
 using Microsoft.Extensions.Logging;
@@ -17,14 +15,12 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<NetworkAgentController> _logger;
         private readonly INetworkMetricsRepository _repository;
-        private readonly IMapper mapper;
 
-        public NetworkAgentController(ILogger<NetworkAgentController> logger, INetworkMetricsRepository repository, IMapper mapper)
+        public NetworkAgentController(ILogger<NetworkAgentController> logger, INetworkMetricsRepository repository)
         {
             _logger = logger;
             _logger.LogDebug("NLog in NetworkAgentController");
             this._repository = repository;
-            this.mapper = mapper;
         }
 
         [HttpGet("byPeriod")]
@@ -40,7 +36,7 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(mapper.Map<NetworkMetricDto>(metric));
+                response.Metrics.Add(new NetworkMetricDto() { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
             }
 
             return Ok(response);
