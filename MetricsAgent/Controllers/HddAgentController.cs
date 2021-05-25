@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using AutoMapper;
 using MetricsAgent.DAL.Models;
 using MetricsAgent.DAL.Requests;
 using MetricsAgent.Requests;
@@ -14,13 +15,15 @@ namespace MetricsAgent.Controllers
     public class HddAgentController : ControllerBase
     {
         private readonly ILogger<HddAgentController> _logger;
-        private IHddMetricsRepository _repository;
+        private readonly IHddMetricsRepository _repository;
+        private readonly IMapper mapper;
 
-        public HddAgentController(ILogger<HddAgentController> logger, IHddMetricsRepository repository)
+        public HddAgentController(ILogger<HddAgentController> logger, IHddMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug("NLog in DotNetAgentController");
             this._repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet("byPeriod")]
@@ -36,7 +39,7 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new HddMetricDto() { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<HddMetricDto>(metric));
             }
 
             return Ok(response);

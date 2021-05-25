@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Data.SQLite;
+using AutoMapper;
 using MetricsAgent.DAL.Repository;
 
 namespace MetricsAgent
@@ -28,6 +29,11 @@ namespace MetricsAgent
             services.AddSingleton<IHddMetricsRepository, HddMetricsRepository>();
             services.AddSingleton<INetworkMetricsRepository, NetworkMetricsRepository>();
             services.AddSingleton<IRamMetricsRepository, RamMetricsRepository>();
+
+            var mapperConfiguration = new MapperConfiguration(mp =>
+                mp.AddProfile(new MapperProfile()));
+            var mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         private void ConfigureSqlLiteConnection(IServiceCollection services)
@@ -48,7 +54,7 @@ namespace MetricsAgent
 
                 //create new table
                 command.CommandText = @"CREATE TABLE CpuMetrics(id INTEGER Not Null PRIMARY KEY, value INT, time INT64)";
-                command.ExecuteNonQuery(); 
+                command.ExecuteNonQuery();
 
                 //Add some fake data in db
                 command.CommandText = "INSERT INTO CpuMetrics VALUES(1,10,1617223300000)";
