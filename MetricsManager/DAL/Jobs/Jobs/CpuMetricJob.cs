@@ -44,7 +44,9 @@ namespace MetricsManager.DAL.Jobs.Jobs
                 {
                     _repository.Create(_mapper.Map<CpuMetrics>(cpuMetric));
                 }
-                
+
+                //Строка для получения максимального значения даты в имеющейся таблице
+                //SELECT id, value, time FROM CpuMetrics WHERE time = (SELECT max(time) FROM CpuMetrics)
             }
             return Task.CompletedTask;
         }
