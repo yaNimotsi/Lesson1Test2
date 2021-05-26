@@ -1,8 +1,14 @@
+using System;
+using FluentMigrator.Runner;
+using MetricsManager.Client;
+using MetricsManager.DAL.ConnectionString;
+using MetricsManager.DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
 
 namespace MetricsManager
 {
@@ -20,6 +26,18 @@ namespace MetricsManager
         {
             services.AddControllers();
             services.AddSingleton<AgentInfo>();
+
+            services.AddFluentMigratorCore()
+                .ConfigureRunner(rb => rb
+                    .AddSQLite()
+                    .WithGlobalConnectionString(ConnectionToDB.ConnectionString)
+                    .ScanIn(typeof(Startup).Assembly).For.Migrations()
+                ).AddLogging(lb => lb
+                    .AddFluentMigratorConsole());
+
+            services.AddHttpClient<IMetricAgentClient, MetricsAgentClient>()
+                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
