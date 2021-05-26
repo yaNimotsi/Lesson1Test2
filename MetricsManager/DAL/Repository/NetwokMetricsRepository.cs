@@ -11,11 +11,11 @@ using System.Linq;
 
 namespace MetricsAgent
 {
-    public interface INetworkMetricsRepository : IRepository<NetworkMetrics>
+    public interface INetworkMetricsManagerRepository : IRepository<NetworkMetrics>
     {
 
     }
-    public class NetworkMetricsRepository: INetworkMetricsRepository
+    public class NetworkMetricsRepository: INetworkMetricsManagerRepository
     {
         
 

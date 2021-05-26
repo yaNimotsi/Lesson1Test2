@@ -11,11 +11,11 @@ using System.Linq;
 
 namespace MetricsAgent
 {
-    public interface IHddMetricsRepository : IRepository<HddMetrics>
+    public interface IHddMetricsManagerRepository : IRepository<HddMetrics>
     {
 
     }
-    public class HddMetricsRepository: IHddMetricsRepository
+    public class HddMetricsRepository: IHddMetricsManagerRepository
     {
 
         private static readonly string ConnectionString = ConnectionToDB.ConnectionString;

@@ -10,4 +10,4 @@ namespace MetricsManager.Request
         public DateTimeOffset ToTime { get; set; }
     }
 }
-}
+

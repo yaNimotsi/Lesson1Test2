@@ -11,11 +11,11 @@ using System.Linq;
 
 namespace MetricsAgent
 {
-    public interface IRamMetricsRepository : IRepository<RamMetrics>
+    public interface IRamMetricsManagerRepository : IRepository<RamMetrics>
     {
 
     }
-    public class RamMetricsRepository: IRamMetricsRepository
+    public class RamMetricsRepository: IRamMetricsManagerRepository
     {
         private static readonly string ConnectionString = ConnectionToDB.ConnectionString;
 

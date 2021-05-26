@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using FluentMigrator.Runner;
 using MetricsManager.Client;
 using MetricsManager.DAL.ConnectionString;
@@ -26,6 +27,13 @@ namespace MetricsManager
         {
             services.AddControllers();
             services.AddSingleton<AgentInfo>();
+
+
+            var mapperConfiguration = new MapperConfiguration(mp =>
+                mp.AddProfile(new MapperProfile()));
+            var mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
+
 
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb

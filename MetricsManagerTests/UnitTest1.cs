@@ -1,5 +1,6 @@
 using System;
 using MetricsManager.Controllers;
+using MetricsManager.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -10,14 +11,15 @@ namespace MetricsManagerTests
 {
     public class CpuControllerUnitTests
     {
-        private CpuMetricsController controller;
-        private Mock<ILogger<CpuMetricsController>> loggeMock;
-        private ILogger<CpuMetricsController> logger;
+        private CpuMetricsController _controller;
+        private Mock<ILogger<CpuMetricsController>> _loggeMock;
+        private ILogger<CpuMetricsController> _logger;
+        private IMetricAgentClient _client;
 
         public CpuControllerUnitTests()
         {
-            loggeMock = new Mock<ILogger<CpuMetricsController>>();
-            controller = new CpuMetricsController(loggeMock.Object);
+            _loggeMock = new Mock<ILogger<CpuMetricsController>>();
+            _controller = new CpuMetricsController(_loggeMock.Object, _client);
         }
 
         [Fact]
@@ -25,11 +27,14 @@ namespace MetricsManagerTests
         {
             var agentId = 1;
 
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            //var fromTime = TimeSpan.FromSeconds(0);
+            //var toTime = TimeSpan.FromSeconds(100);
+
+            var fromTime = DateTimeOffset.FromUnixTimeMilliseconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeMilliseconds(100);
 
             //Act
-            var result = controller.GetMetricsFromAgent(agentId, fromTime, toTime);
+            var result = _controller.GetMetricsFromAgent(agentId, fromTime, toTime);
 
             //Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -41,7 +46,7 @@ namespace MetricsManagerTests
             var toTime = TimeSpan.FromSeconds(100);
 
             //Act
-            var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
+            var result = _controller.GetMetricsFromAllCluster(fromTime, toTime);
 
             //Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);

@@ -1,27 +1,51 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
+using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
 using MetricsManager.DAL.Repository;
+using MetricsManager.Request;
+using MetricsManager.Response;
+using Microsoft.AspNetCore.Authentication;
 using Quartz;
 
 namespace MetricsManager.DAL.Jobs.Jobs
 {
     public class CpuMetricJob : IJob
     {
-        private readonly ICpuMetricsRepository _repository;
-        public CpuMetricJob(ICpuMetricsRepository repository)
+        private readonly ICpuMetricsManagerRepository _repository;
+        private readonly IAgentsRepository _agentsRepository;
+        private readonly IMetricAgentClient _metricAgentClient;
+        private readonly IMapper _mapper;
+        public CpuMetricJob(ICpuMetricsManagerRepository repository, IAgentsRepository agentsRepository, IMetricAgentClient metricAgentClient, IMapper mapper)
         {
             _repository = repository;
-            _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            _agentsRepository = agentsRepository;
+            _metricAgentClient = metricAgentClient;
+            _mapper = mapper;
         }
         public Task Execute(IJobExecutionContext context)
         {
-            var cpuUsageInPercents = Convert.ToInt32(_cpuCounter.NextValue());
-            var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var allAgents = _agentsRepository.GetAllAgent();
 
-            
-            _repository.Create(new CpuMetrics{Time = time, Value = cpuUsageInPercents});
+            foreach (var agent in allAgents)
+            {
+                var agentUri = agent.AgentUrl;
+                var time = DateTimeOffset.UtcNow;
 
+                var allCpuMetrics = _metricAgentClient.GetAllCpuMetricsResponse(new CpuMetricCreateRequest
+                {
+                    AgentPath = agentUri,
+                    FromTime = time,
+                    ToTime = time
+                });
+
+                foreach (var cpuMetric in allCpuMetrics.Metrics)
+                {
+                    _repository.Create(_mapper.Map<CpuMetrics>(cpuMetric));
+                }
+                
+            }
             return Task.CompletedTask;
         }
     }
