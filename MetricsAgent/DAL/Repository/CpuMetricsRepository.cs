@@ -9,7 +9,7 @@ namespace MetricsAgent.DAL.Repository
 {
     public interface ICpuMetricsRepository : IRepository<CpuMetrics>
     {
-
+        List<CpuMetrics> GetMaxDate();
     }
 
     public class CpuMetricsRepository : ICpuMetricsRepository
@@ -39,6 +39,14 @@ namespace MetricsAgent.DAL.Repository
                         fromTime = fromTime.ToUnixTimeMilliseconds(),
                         toTime = toTime.ToUnixTimeMilliseconds()
                     }).ToList();
+            }
+        }
+
+        public List<CpuMetrics> GetMaxDate()
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<CpuMetrics>("SELECT id, value, time FROM CpuMetrics WHERE time = (SELECT max(time) FROM CpuMetrics)").ToList();
             }
         }
     }

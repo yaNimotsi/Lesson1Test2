@@ -20,4 +20,11 @@
   <ItemGroup>
     <Content Update="nlog.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Request\FromDB\" />
+    <Folder Include="Request\FromAgent\" />
+    <Folder Include="Response\FromDB\" />
+    <Folder Include="Response\FromAgent\" />
+  </ItemGroup>
 </Project>

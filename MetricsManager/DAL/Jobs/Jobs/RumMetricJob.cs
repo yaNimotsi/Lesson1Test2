@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using MetricsAgent;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
 using MetricsManager.DAL.Repository;
@@ -11,13 +12,13 @@ using Quartz;
 
 namespace MetricsManager.DAL.Jobs.Jobs
 {
-    public class CpuMetricJob : IJob
+    public class RamMetricJob : IJob
     {
-        private readonly ICpuMetricsManagerRepository _repository;
+        private readonly IRamMetricsManagerRepository _repository;
         private readonly IAgentsRepository _agentsRepository;
         private readonly IMetricAgentClient _metricAgentClient;
         private readonly IMapper _mapper;
-        public CpuMetricJob(ICpuMetricsManagerRepository repository, IAgentsRepository agentsRepository, IMetricAgentClient metricAgentClient, IMapper mapper)
+        public RamMetricJob(IRamMetricsManagerRepository repository, IAgentsRepository agentsRepository, IMetricAgentClient metricAgentClient, IMapper mapper)
         {
             _repository = repository;
             _agentsRepository = agentsRepository;
@@ -33,14 +34,14 @@ namespace MetricsManager.DAL.Jobs.Jobs
                 //Получение uri агента
                 var agentUri = agent.AgentUrl;
                 //Получение максимальной даты у агента
-                var fromTime = _metricAgentClient.GetMaxDateCpuMetricsInAgent(new CpuMetricCreateRequest
+                var fromTime = _metricAgentClient.GetMaxDateRamMetricsInAgent(new RamMetricCreateRequest
                 {
                     AgentUri = agentUri
                 });
                 //Дата, до которой будет собираться метрика
                 var time = DateTimeOffset.UtcNow;
 
-                var allCpuMetrics = _metricAgentClient.GetAllCpuMetricsResponse(new CpuMetricCreateRequest
+                var allCpuMetrics = _metricAgentClient.GetAllRamMetricsResponse(new RamMetricCreateRequest
                 {
                     AgentUri = agentUri,
                     FromTime = DateTimeOffset.FromUnixTimeMilliseconds(fromTime.Time),
@@ -49,7 +50,7 @@ namespace MetricsManager.DAL.Jobs.Jobs
 
                 foreach (var cpuMetric in allCpuMetrics.Metrics)
                 {
-                    _repository.Create(_mapper.Map<CpuMetrics>(cpuMetric));
+                    _repository.Create(_mapper.Map<RamMetrics>(cpuMetric));
                 }
             }
             return Task.CompletedTask;

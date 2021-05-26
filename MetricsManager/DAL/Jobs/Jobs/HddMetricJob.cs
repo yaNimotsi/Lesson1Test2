@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using MetricsAgent;
+using MetricsAgent.DAL.Requests;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
 using MetricsManager.DAL.Repository;
@@ -11,13 +13,13 @@ using Quartz;
 
 namespace MetricsManager.DAL.Jobs.Jobs
 {
-    public class CpuMetricJob : IJob
+    public class HddMetricJob : IJob
     {
-        private readonly ICpuMetricsManagerRepository _repository;
+        private readonly IHddMetricsManagerRepository _repository;
         private readonly IAgentsRepository _agentsRepository;
         private readonly IMetricAgentClient _metricAgentClient;
         private readonly IMapper _mapper;
-        public CpuMetricJob(ICpuMetricsManagerRepository repository, IAgentsRepository agentsRepository, IMetricAgentClient metricAgentClient, IMapper mapper)
+        public HddMetricJob(IHddMetricsManagerRepository repository, IAgentsRepository agentsRepository, IMetricAgentClient metricAgentClient, IMapper mapper)
         {
             _repository = repository;
             _agentsRepository = agentsRepository;
@@ -33,14 +35,14 @@ namespace MetricsManager.DAL.Jobs.Jobs
                 //Получение uri агента
                 var agentUri = agent.AgentUrl;
                 //Получение максимальной даты у агента
-                var fromTime = _metricAgentClient.GetMaxDateCpuMetricsInAgent(new CpuMetricCreateRequest
+                var fromTime = _metricAgentClient.GetMaxDateHddMetricsInAgent(new HddMetricCreateRequest
                 {
                     AgentUri = agentUri
                 });
                 //Дата, до которой будет собираться метрика
                 var time = DateTimeOffset.UtcNow;
 
-                var allCpuMetrics = _metricAgentClient.GetAllCpuMetricsResponse(new CpuMetricCreateRequest
+                var allCpuMetrics = _metricAgentClient.GetAllHddMetricsResponse(new HddMetricCreateRequest
                 {
                     AgentUri = agentUri,
                     FromTime = DateTimeOffset.FromUnixTimeMilliseconds(fromTime.Time),
@@ -49,7 +51,7 @@ namespace MetricsManager.DAL.Jobs.Jobs
 
                 foreach (var cpuMetric in allCpuMetrics.Metrics)
                 {
-                    _repository.Create(_mapper.Map<CpuMetrics>(cpuMetric));
+                    _repository.Create(_mapper.Map<HddMetrics>(cpuMetric));
                 }
             }
             return Task.CompletedTask;

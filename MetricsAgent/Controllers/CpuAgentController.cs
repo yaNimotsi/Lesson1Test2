@@ -51,5 +51,25 @@ namespace MetricsAgent.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("MaxDate")]
+        public IActionResult GetMaxDate()
+        {
+            _logger.LogInformation($"Start method GetMaxDate in CpuAgentController");
+            
+            var metrics = _repository.GetMaxDate();
+
+            var response = new AllCpuMetricsResponse()
+            {
+                Metrics = new List<CpuMetricDto>()
+            };
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
+            }
+
+            return Ok(response);
+        }
     }
 }

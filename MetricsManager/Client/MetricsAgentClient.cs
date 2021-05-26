@@ -9,6 +9,7 @@ using NLog;
 using System;
 using System.Net.Http;
 using System.Text.Json;
+using MetricsManager.DAL.Models;
 using NLog.Fluent;
 
 namespace MetricsManager.Client
@@ -24,13 +25,108 @@ namespace MetricsManager.Client
             _logger = logger;
         }
 
+        public CpuMetrics GetMaxDateCpuMetricsInAgent(CpuMetricCreateRequest request)
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get,
+                $"{request.AgentUri}/api/MaxDate");
+            try
+            {
+                HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+
+                return JsonSerializer.DeserializeAsync<CpuMetrics>(responseStream).Result;
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e.Message);
+            }
+
+            return null;
+        }
+
+        public HddMetrics GetMaxDateHddMetricsInAgent(HddMetricCreateRequest request)
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get,
+                $"{request.AgentUri}/api/MaxDate");
+            try
+            {
+                HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+
+                return JsonSerializer.DeserializeAsync<HddMetrics>(responseStream).Result;
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e.Message);
+            }
+
+            return null;
+        }
+
+        public NetworkMetrics GetMaxDateNetworkMetricsInAgent(NetworkMetricCreateRequest request)
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get,
+                $"{request.AgentUri}/api/MaxDate");
+            try
+            {
+                HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+
+                return JsonSerializer.DeserializeAsync<NetworkMetrics>(responseStream).Result;
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e.Message);
+            }
+
+            return null;
+        }
+
+        public RamMetrics GetMaxDateRamMetricsInAgent(RamMetricCreateRequest request)
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get,
+                $"{request.AgentUri}/api/MaxDate");
+            try
+            {
+                HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+
+                return JsonSerializer.DeserializeAsync<RamMetrics>(responseStream).Result;
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e.Message);
+            }
+
+            return null;
+        }
+
+        public DotNetMetrics GetMaxDateDotNetMetricsInAgent(DotNetMetricCreateRequest request)
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get,
+                $"{request.AgentUri}/api/MaxDate");
+            try
+            {
+                HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+
+                return JsonSerializer.DeserializeAsync<DotNetMetrics>(responseStream).Result;
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogLevel.Error, e.Message);
+            }
+
+            return null;
+        }
+
         public AllCpuMetricsResponse GetAllCpuMetricsResponse(CpuMetricCreateRequest request)
         {
             var fromTime = request.FromTime.ToUnixTimeMilliseconds();
             var toTime = request.ToTime.ToUnixTimeMilliseconds();
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentPath}/api/byPeriod/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -46,6 +142,7 @@ namespace MetricsManager.Client
 
             return null;
         }
+        
 
         public AllHddMetricsResponse GetAllHddMetricsResponse(HddMetricCreateRequest request)
         {
@@ -53,7 +150,7 @@ namespace MetricsManager.Client
             var toTime = request.ToTime.ToUnixTimeMilliseconds();
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentPath}/api/byPeriod/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -76,7 +173,7 @@ namespace MetricsManager.Client
             var toTime = request.ToTime.ToUnixTimeMilliseconds();
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentPath}/api/byPeriod/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -99,7 +196,7 @@ namespace MetricsManager.Client
             var toTime = request.ToTime.ToUnixTimeMilliseconds();
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentPath}/api/byPeriod/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -122,7 +219,7 @@ namespace MetricsManager.Client
             var toTime = request.ToTime.ToUnixTimeMilliseconds();
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentPath}/api/byPeriod/from/{fromTime}/to/{toTime}");
+                $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {

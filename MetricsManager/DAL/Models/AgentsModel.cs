@@ -7,7 +7,7 @@ namespace MetricsManager.DAL.Models
 {
     public class AgentsModel
     {
-        public int AgentId { get; set; }
+        public long AgentId { get; set; }
         public string AgentUrl { get; set; }
     }
 }

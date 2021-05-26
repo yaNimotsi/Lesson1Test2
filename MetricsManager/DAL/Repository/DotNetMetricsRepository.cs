@@ -23,7 +23,7 @@ namespace MetricsAgent.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("Insert into DotNetmetrics(agentId, value, time) Values(@agentId,@value,@time)",
+                connection.Execute("Insert into DotNetMetrics(agentId, value, time) Values(@agentId,@value,@time)",
                     new
                     {
                         agentid = item.AgentId,
@@ -37,7 +37,7 @@ namespace MetricsAgent.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<DotNetMetrics>("SELECT id, agentId, value, time FROM DotNetmetrics WHERE time >= @fromTime AND time <= @toTime",
+                return connection.Query<DotNetMetrics>("SELECT id, agentId, value, time FROM DotNetMetrics WHERE time >= @fromTime AND time <= @toTime",
                     new
                     {
                         fromTime = fromTime.ToUnixTimeMilliseconds(),
@@ -50,7 +50,7 @@ namespace MetricsAgent.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<DotNetMetrics>("SELECT id, agentId, value, time FROM DotNetmetrics WHERE time >= @fromTime AND time <= @toTime AND agentId = @thisAgentId",
+                return connection.Query<DotNetMetrics>("SELECT id, agentId, value, time FROM DotNetMetrics WHERE time >= @fromTime AND time <= @toTime AND agentId = @thisAgentId",
                     new
                     {
                         thisAgentId = agentId,

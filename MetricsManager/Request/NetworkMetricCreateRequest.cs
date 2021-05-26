@@ -5,7 +5,7 @@ namespace MetricsManager.Request
 {
     public class NetworkMetricCreateRequest
     {
-        public string AgentPath { get; set; }
+        public string AgentUri { get; set; }
         public DateTimeOffset FromTime { get; set; }
         public DateTimeOffset ToTime { get; set; }
     }
