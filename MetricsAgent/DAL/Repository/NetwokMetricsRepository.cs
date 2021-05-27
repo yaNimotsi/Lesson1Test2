@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
 using MetricsAgent.DAL.Models;
 
 namespace MetricsAgent
 {
     public interface INetworkMetricsRepository : IRepository<NetworkMetrics>
     {
-
+        List<NetworkMetrics> GetMaxDate();
     }
     public class NetworkMetricsRepository: INetworkMetricsRepository
     {
@@ -61,6 +62,14 @@ namespace MetricsAgent
             cmd.Prepare();
 
             cmd.ExecuteNonQuery();
+        }
+
+        public List<NetworkMetrics> GetMaxDate()
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<NetworkMetrics>("SELECT id, value, time FROM NetworkMetrics WHERE time = (SELECT max(time) FROM CpuMetrics)").ToList();
+            }
         }
     }
 }

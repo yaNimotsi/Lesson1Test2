@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using AutoMapper;
 using MetricsAgent.DAL.Models;
 using MetricsAgent.DAL.Requests;
 using MetricsAgent.Requests;
@@ -15,18 +16,20 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<HddAgentController> _logger;
         private IHddMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
-        public HddAgentController(ILogger<HddAgentController> logger, IHddMetricsRepository repository)
+        public HddAgentController(ILogger<HddAgentController> logger, IHddMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
-            _logger.LogDebug("NLog in DotNetAgentController");
+            _logger.LogDebug("NLog in HddAgentController");
             this._repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("byPeriod")]
         public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
-            _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
+            _logger.LogInformation($"Start method GetByTimePeriod in HddAgentController by interval {fromTime}-{toTime}");
 
             var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 
@@ -36,7 +39,27 @@ namespace MetricsAgent.Controllers
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new HddMetricDto() { Time = DateTimeOffset.FromUnixTimeMilliseconds(metric.Time).ToLocalTime(), Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("MaxDate")]
+        public IActionResult GetMaxDate()
+        {
+            _logger.LogInformation($"Start method GetMaxDate in HddAgentController");
+
+            var metrics = _repository.GetMaxDate();
+
+            var response = new AllHddMetricsResponse()
+            {
+                Metrics = new List<HddMetricDto>()
+            };
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
             }
 
             return Ok(response);

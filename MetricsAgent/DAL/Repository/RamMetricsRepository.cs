@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
 using MetricsAgent.DAL.Models;
 
 namespace MetricsAgent
 {
     public interface IRamMetricsRepository : IRepository<RamMetrics>
     {
-
+        List<RamMetrics> GetMaxDate();
     }
     public class RamMetricsRepository: IRamMetricsRepository
     {
@@ -61,6 +62,14 @@ namespace MetricsAgent
             cmd.Prepare();
 
             cmd.ExecuteNonQuery();
+        }
+
+        public List<RamMetrics> GetMaxDate()
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<RamMetrics>("SELECT id, value, time FROM RamMetrics WHERE time = (SELECT max(time) FROM CpuMetrics)").ToList();
+            }
         }
     }
 }

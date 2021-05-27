@@ -64,8 +64,9 @@ namespace MetricsAgentTests
         {
             _mock = new Mock<IDotNetMetricsRepository>();
             var mockLogger = new Mock<ILogger<DotNetAgentController>>();
+            var mockMapper = new Mock<IMapper>();
 
-            _controller = new DotNetAgentController(mockLogger.Object, _mock.Object);
+            _controller = new DotNetAgentController(mockLogger.Object, _mock.Object, mockMapper.Object);
         }
 
         [Fact]
@@ -102,8 +103,9 @@ namespace MetricsAgentTests
         {
             _mock = new Mock<IHddMetricsRepository>();
             var mockLogger = new Mock<ILogger<HddAgentController>>();
+            var mockMapper = new Mock<IMapper>();
 
-            _controller = new HddAgentController(mockLogger.Object, _mock.Object);
+            _controller = new HddAgentController(mockLogger.Object, _mock.Object, mockMapper.Object);
         }
 
         [Fact]
@@ -140,8 +142,9 @@ namespace MetricsAgentTests
         {
             _mock = new Mock<INetworkMetricsRepository>();
             var mockLogger = new Mock<ILogger<NetworkAgentController>>();
+            var mockMapper = new Mock<IMapper>();
 
-            _controller = new NetworkAgentController(mockLogger.Object, _mock.Object);
+            _controller = new NetworkAgentController(mockLogger.Object, _mock.Object, mockMapper.Object);
         }
 
         [Fact]
@@ -178,8 +181,9 @@ namespace MetricsAgentTests
         {
             _mock = new Mock<IRamMetricsRepository>();
             var mockLogger = new Mock<ILogger<RamAgentController>>();
+            var mockMapper = new Mock<IMapper>();
 
-            _controller = new RamAgentController(mockLogger.Object, _mock.Object);
+            _controller = new RamAgentController(mockLogger.Object, _mock.Object, mockMapper.Object);
         }
 
         [Fact]

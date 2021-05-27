@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
+using Dapper;
 using MetricsAgent.DAL.Models;
 
 namespace MetricsAgent.DAL.Repository
 {
     public interface IDotNetMetricsRepository : IRepository<DotNetMetrics>
     {
-
+        List<DotNetMetrics> GetMaxDate();
     }
     public class DotNetMetricsRepository : IDotNetMetricsRepository
     {
@@ -59,6 +61,14 @@ namespace MetricsAgent.DAL.Repository
             cmd.Prepare();
 
             cmd.ExecuteNonQuery();
+        }
+
+        public List<DotNetMetrics> GetMaxDate()
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<DotNetMetrics>("SELECT id, value, time FROM DotNetmetrics WHERE time = (SELECT max(time) FROM CpuMetrics)").ToList();
+            }
         }
     }
 }
