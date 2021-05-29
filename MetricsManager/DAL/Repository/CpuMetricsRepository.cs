@@ -43,5 +43,19 @@ namespace MetricsManager.DAL.Repository
                     }).ToList();
             }
         }
+
+        public List<CpuMetrics> GetByAgentAndTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<CpuMetrics>("SELECT id, agentId, value, time FROM CpuMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
+                    new
+                    {
+                        agentId = agentId,
+                        fromTime = fromTime.ToUnixTimeMilliseconds(),
+                        toTime = toTime.ToUnixTimeMilliseconds()
+                    }).ToList();
+            }
+        }
     }
 }

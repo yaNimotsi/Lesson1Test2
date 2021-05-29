@@ -29,6 +29,20 @@ namespace MetricsManager.DAL.Repository
             }
         }
 
+        public List<DotNetMetrics> GetByAgentAndTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<DotNetMetrics>("SELECT id, agentId, value, time FROM DotNetMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
+                    new
+                    {
+                        agentId = agentId,
+                        fromTime = fromTime.ToUnixTimeMilliseconds(),
+                        toTime = toTime.ToUnixTimeMilliseconds()
+                    }).ToList();
+            }
+        }
+
         public void Create(DotNetMetrics item)
         {
             using (var connection = new SQLiteConnection(ConnectionString))

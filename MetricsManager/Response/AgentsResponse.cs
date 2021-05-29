@@ -5,10 +5,10 @@ namespace MetricsManager.Response
 {
     public class AgentsResponse
     {
-        public List<AgentcDto> Metrics { get; set; }
+        public List<AgentDto> Metrics { get; set; }
     }
 
-    public class AgentcDto
+    public class AgentDto
     {
         public int AgentId { get; set; }
         public string AgentUri { get; set; }

@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+
+using MetricsAgent.DAL.Repository;
+using MetricsAgent.Requests;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
-using AutoMapper;
-using MetricsAgent.DAL.Models;
-using MetricsAgent.DAL.Repository;
-using MetricsAgent.DAL.Requests;
-using MetricsAgent.Requests;
-using Microsoft.Extensions.Logging;
-using NLog;
-using ILogger = NLog.ILogger;
 
 namespace MetricsAgent.Controllers
 {

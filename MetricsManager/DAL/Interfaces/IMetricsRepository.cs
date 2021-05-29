@@ -6,6 +6,7 @@ namespace MetricsManager.DAL.Interfaces
     public interface IMetricsRepository<T> where T: class
     {
         List<T> GetByTimePeriod(DateTimeOffset item, DateTimeOffset item2);
+        List<T> GetByAgentAndTimePeriod(int agentId, DateTimeOffset item, DateTimeOffset item2);
         void Create(T item);
         
     }

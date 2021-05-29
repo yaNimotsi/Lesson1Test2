@@ -1,17 +1,18 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
+using MetricsManager.DAL.Models;
+using MetricsManager.Response;
 
-using MetricsAgent.DAL.Models;
-using MetricsAgent.Requests;
-
-using System;
-
-namespace MetricsAgent
+namespace MetricsManager
 {
     public class MapperProfile : Profile
     {
         public MapperProfile()
         {
             CreateMap<long, DateTimeOffset>().ConvertUsing(new DateTimeOffsetConverter());
+            
+            CreateMap<AgentModel, AgentDto>();
+            
             CreateMap<CpuMetrics, CpuMetricDto>();
             CreateMap<DotNetMetrics, DotNetMetricDto>();
             CreateMap<HddMetrics, HddMetricDto>();

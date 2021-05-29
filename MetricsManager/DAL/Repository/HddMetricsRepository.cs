@@ -29,6 +29,20 @@ namespace MetricsManager.DAL.Repository
             }
         }
 
+        public List<HddMetrics> GetByAgentAndTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<HddMetrics>("SELECT id, agentId, value, time FROM HddMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
+                    new
+                    {
+                        agentId = agentId,
+                        fromTime = fromTime.ToUnixTimeMilliseconds(),
+                        toTime = toTime.ToUnixTimeMilliseconds()
+                    }).ToList();
+            }
+        }
+
         public void Create(HddMetrics item)
         {
             using (var connection = new SQLiteConnection(ConnectionString))

@@ -1,3 +1,5 @@
+using AutoMapper;
+
 using FluentMigrator.Runner;
 
 using MetricsManager.DAL.Repository;
@@ -25,6 +27,7 @@ namespace MetricsManager
             services.AddControllers();
             services.AddSingleton<AgentInfo>();
 
+            services.AddSingleton<IAgentsRepository, AgentsRepository>();
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddSingleton<IDotNetMetricsRepository, DotNetMetricsRepository>();
             services.AddSingleton<IHddMetricsRepository, HddMetricsRepository>();
@@ -38,6 +41,11 @@ namespace MetricsManager
                     .ScanIn(typeof(Startup).Assembly).For.Migrations()
                 ).AddLogging(lb => lb
                     .AddFluentMigratorConsole());
+
+            var mapperConfiguration = new MapperConfiguration(mp =>
+                mp.AddProfile(new MapperProfile()));
+            var mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
