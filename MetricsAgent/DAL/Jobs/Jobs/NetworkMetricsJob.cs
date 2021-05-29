@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using MetricsAgent.DAL.Models;
+using MetricsAgent.DAL.Repository;
 using Quartz;
 
 namespace MetricsAgent.DAL.Jobs.Jobs
