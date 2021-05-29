@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using Dapper;
-using MetricsAgent.DAL.Models;
+using MetricsManager.DAL.Interfaces;
+using MetricsManager.DAL.Models;
 
-namespace MetricsAgent.DAL.Repository
+namespace MetricsManager.DAL.Repository
 {
-    public interface IDotNetMetricsRepository : IRepository<DotNetMetrics>
+    public interface IDotNetMetricsRepository : IMetricsRepository<DotNetMetrics>
     {
 
     }

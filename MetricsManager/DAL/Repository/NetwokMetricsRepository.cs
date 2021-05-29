@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using Dapper;
-using MetricsAgent.DAL.Models;
+using MetricsManager.DAL.Interfaces;
+using MetricsManager.DAL.Models;
 
-namespace MetricsAgent.DAL.Repository
+namespace MetricsManager.DAL.Repository
 {
-    public interface IDotNetMetricsRepository : IRepository<DotNetMetrics>
+    public interface INetworkMetricsRepository : IMetricsRepository<NetworkMetrics>
     {
 
     }
-    public class DotNetMetricsRepository : IDotNetMetricsRepository
+    public class NetworkMetricsRepository: INetworkMetricsRepository
     {
         private static readonly string ConnectionString = ConnToDB.ConnectionString;
 
-        public List<DotNetMetrics> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
+        public List<NetworkMetrics> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
+            
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<DotNetMetrics>("SELECT id,value, time FROM DotNetMetrics WHERE time >= @startPeriod and time <= @endPeriod",
+                return connection.Query<NetworkMetrics>("SELECT id, agentId, value, time FROM NetworkMetrics WHERE time >= @startPeriod and time <= @endPeriod",
                     new
                     {
                         fromTime = fromTime.ToUnixTimeMilliseconds(),
@@ -28,11 +30,11 @@ namespace MetricsAgent.DAL.Repository
             }
         }
 
-        public void Create(DotNetMetrics item)
+        public void Create(NetworkMetrics item)
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("Insert into DotNetMetrics(value, time) Values(@value,@time)",
+                connection.Execute("Insert into NetworkMetrics(agentId, value, time) Values(@agentId,@value,@time)",
                     new
                     {
                         value = item.Value,
