@@ -27,7 +27,7 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
             {
                 var agentId = agent.AgentId;
                 var agentUri = agent.AgentUrl;
-                var fromTime = _cpuRepository.GetMaxDate();
+                var fromTime = _cpuRepository.GetMaxDate(agentId);
                 var toTime = DateTimeOffset.UtcNow;
 
                 var allMetrics = _client.GetCpuMetricsFromAgent(new AllCpuMetricsApiRequest

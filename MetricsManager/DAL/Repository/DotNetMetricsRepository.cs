@@ -43,11 +43,15 @@ namespace MetricsManager.DAL.Repository
             }
         }
 
-        public DateTimeOffset GetMaxDate()
+        public DateTimeOffset GetMaxDate(int agentId)
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("SELECT max(time) from DotNetMetrics");
+                connection.Execute("SELECT max(time) from DotNetMetrics where agentId = @agentId",
+                    new
+                    {
+                        agentId = agentId
+                    });
             }
 
             return DateTimeOffset.UtcNow;

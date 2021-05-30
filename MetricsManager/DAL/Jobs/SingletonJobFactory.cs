@@ -1,7 +1,9 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+
 using Quartz;
 using Quartz.Spi;
+
+using System;
 
 namespace MetricsManager.DAL.Jobs
 {

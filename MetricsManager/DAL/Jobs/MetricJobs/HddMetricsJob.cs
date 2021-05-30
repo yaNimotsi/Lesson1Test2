@@ -30,7 +30,7 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
             {
                 var agentId = agent.AgentId;
                 var agentUri = agent.AgentUrl;
-                var fromTime = _hddRepository.GetMaxDate();
+                var fromTime = _hddRepository.GetMaxDate(agentId);
                 var toTime = DateTimeOffset.UtcNow;
 
                 var allMetrics = _client.GetHddMetricsFromAgent(new AllHddMetricsApiRequest()

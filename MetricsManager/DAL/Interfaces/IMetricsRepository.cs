@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration.Internal;
 
 namespace MetricsManager.DAL.Interfaces
 {
@@ -8,7 +9,7 @@ namespace MetricsManager.DAL.Interfaces
         List<T> GetByTimePeriod(DateTimeOffset item, DateTimeOffset item2);
         List<T> GetByAgentAndTimePeriod(int agentId, DateTimeOffset item, DateTimeOffset item2);
 
-        DateTimeOffset GetMaxDate();
+        DateTimeOffset GetMaxDate(int agentId);
         void Create(T item);
         
     }

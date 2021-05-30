@@ -29,7 +29,7 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
             {
                 var agentId = agent.AgentId;
                 var agentUri = agent.AgentUrl;
-                var fromTime = _networkRepository.GetMaxDate();
+                var fromTime = _networkRepository.GetMaxDate(agentId);
                 var toTime = DateTimeOffset.UtcNow;
 
                 var allMetrics = _client.GetNetworkMetricsFromAgent(new AllNetworkMetricsApiRequest()

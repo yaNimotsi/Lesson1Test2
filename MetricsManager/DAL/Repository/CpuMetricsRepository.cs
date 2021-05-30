@@ -17,11 +17,15 @@ namespace MetricsManager.DAL.Repository
     {
         private static readonly string ConnectionString = ConnToDB.ConnectionString;
 
-        public DateTimeOffset GetMaxDate()
+        public DateTimeOffset GetMaxDate(int agentId)
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("SELECT max(time) from CpuMetrics");
+                connection.Execute("SELECT max(time) from CpuMetrics where agentId = @agentId", 
+                    new
+                    {
+                        agentId = agentId
+                    });
             }
 
             return DateTimeOffset.UtcNow;
