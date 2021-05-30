@@ -8,16 +8,16 @@ using Quartz;
 using System;
 using System.Threading.Tasks;
 
-namespace MetricsManager.DAL.Jobs.Jobs
+namespace MetricsManager.DAL.Jobs.MetricJobs
 {
-    public class DotNetMetricsJob : IJob
+    public class NetworkMetricsJob : IJob
     {
-        private readonly IDotNetMetricsRepository _dotNetRepository;
+        private readonly INetworkMetricsRepository _networkRepository; 
         private readonly IAgentsRepository _agentsRepository;
         private readonly IMetricsAgentClient _client;
-        public DotNetMetricsJob(IDotNetMetricsRepository repository, IAgentsRepository agentsRepository, IMetricsAgentClient client)
+        public NetworkMetricsJob(INetworkMetricsRepository repository, IAgentsRepository agentsRepository, IMetricsAgentClient client)
         {
-            _dotNetRepository = repository;
+            _networkRepository = repository; 
             _agentsRepository = agentsRepository;
             _client = client;
         }
@@ -29,10 +29,10 @@ namespace MetricsManager.DAL.Jobs.Jobs
             {
                 var agentId = agent.AgentId;
                 var agentUri = agent.AgentUrl;
-                var fromTime = _dotNetRepository.GetMaxDate();
+                var fromTime = _networkRepository.GetMaxDate();
                 var toTime = DateTimeOffset.UtcNow;
 
-                var allMetrics = _client.GetDotNetMetricsFromAgent(new AllDotNetCpuMetricsApiRequest()
+                var allMetrics = _client.GetNetworkMetricsFromAgent(new AllNetworkMetricsApiRequest()
                 {
                     AgentUri = agentUri,
                     FromTime = fromTime,
@@ -42,7 +42,7 @@ namespace MetricsManager.DAL.Jobs.Jobs
                 if (allMetrics.Metrics.Count <= 0) continue;
                 foreach (var metric in allMetrics.Metrics)
                 {
-                    _dotNetRepository.Create(new DotNetMetrics()
+                    _networkRepository.Create(new NetworkMetrics()
                     {
                         AgentId = agentId,
                         Id = metric.Id,

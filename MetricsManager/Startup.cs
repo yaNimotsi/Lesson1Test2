@@ -2,9 +2,10 @@ using AutoMapper;
 
 using FluentMigrator.Runner;
 
+using MetricsManager.DAL.Client;
+using MetricsManager.DAL.Client.Interface;
 using MetricsManager.DAL.Jobs;
 using MetricsManager.DAL.Jobs.HostedService;
-using MetricsManager.DAL.Jobs.Jobs;
 using MetricsManager.DAL.Jobs.Schedule;
 using MetricsManager.DAL.Repository;
 
@@ -14,9 +15,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Polly;
+
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
+
+using System;
+using MetricsManager.DAL.Jobs.MetricJobs;
 
 namespace MetricsManager
 {
@@ -54,6 +60,10 @@ namespace MetricsManager
                 mp.AddProfile(new MapperProfile()));
             var mapper = mapperConfiguration.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
+                .AddTransientHttpErrorPolicy(p =>
+                    p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
 
             services.AddHostedService<QuartzHostedService>();
 

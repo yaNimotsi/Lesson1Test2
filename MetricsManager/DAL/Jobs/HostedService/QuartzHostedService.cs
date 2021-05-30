@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using MetricsManager.DAL.Jobs.Schedule;
+﻿using MetricsManager.DAL.Jobs.Schedule;
+
 using Microsoft.Extensions.Hosting;
+
 using Quartz;
 using Quartz.Spi;
+
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MetricsManager.DAL.Jobs.HostedService
 {

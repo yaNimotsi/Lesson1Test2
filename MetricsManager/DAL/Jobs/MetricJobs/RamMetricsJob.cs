@@ -1,14 +1,14 @@
-﻿using MetricsManager.DAL.Models;
+﻿using MetricsManager.DAL.Client.Interface;
+using MetricsManager.DAL.Client.Request;
+using MetricsManager.DAL.Models;
 using MetricsManager.DAL.Repository;
 
 using Quartz;
 
 using System;
 using System.Threading.Tasks;
-using MetricsManager.DAL.Client.Interface;
-using MetricsManager.DAL.Client.Request;
 
-namespace MetricsManager.DAL.Jobs.Jobs
+namespace MetricsManager.DAL.Jobs.MetricJobs
 {
     public class RamMetricsJob : IJob
     {
