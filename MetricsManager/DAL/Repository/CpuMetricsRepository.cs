@@ -17,7 +17,7 @@ namespace MetricsManager.DAL.Repository
     {
         private static readonly string ConnectionString = ConnToDB.ConnectionString;
 
-        public DateTimeOffset GetMaxDate(int agentId)
+        public DateTimeOffset GetMaxDate(long agentId)
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {

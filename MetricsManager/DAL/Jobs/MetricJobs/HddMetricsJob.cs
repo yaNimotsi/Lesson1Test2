@@ -29,7 +29,7 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
             foreach (var agent in allAgents)
             {
                 var agentId = agent.AgentId;
-                var agentUri = agent.AgentUrl;
+                var agentUri = agent.AgentUri;
                 var fromTime = _hddRepository.GetMaxDate(agentId);
                 var toTime = DateTimeOffset.UtcNow;
 

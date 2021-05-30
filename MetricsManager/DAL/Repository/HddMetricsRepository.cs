@@ -43,7 +43,7 @@ namespace MetricsManager.DAL.Repository
             }
         }
 
-        public DateTimeOffset GetMaxDate(int agentId)
+        public DateTimeOffset GetMaxDate(long agentId)
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {

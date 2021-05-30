@@ -10,7 +10,7 @@ namespace MetricsManager.Response
 
     public class AgentDto
     {
-        public int AgentId { get; set; }
+        public long AgentId { get; set; }
         public string AgentUri { get; set; }
     }
 }

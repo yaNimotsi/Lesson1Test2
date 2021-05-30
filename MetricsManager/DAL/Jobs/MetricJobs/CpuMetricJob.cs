@@ -29,8 +29,8 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
             foreach (var agent in allAgents)
             {
                 var agentId = agent.AgentId;
-                var agentUri = agent.AgentUrl;
-                var fromTime = _cpuRepository.GetMaxDate(agentId);
+                var agentUri = agent.AgentUri;
+                var fromTime = _cpuRepository.GetMaxDate(1);
                 var toTime = DateTimeOffset.UtcNow;
 
                 var allMetrics = _client.GetCpuMetricsFromAgent(new AllCpuMetricsApiRequest
@@ -40,7 +40,7 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
                     ToTime = toTime
                 });
 
-                if (allMetrics.Metrics.Count <= 0) continue;
+                if (allMetrics != null) continue;
 
                 foreach (var metric in allMetrics.Metrics)
                 {

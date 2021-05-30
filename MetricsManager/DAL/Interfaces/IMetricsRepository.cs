@@ -9,7 +9,7 @@ namespace MetricsManager.DAL.Interfaces
         List<T> GetByTimePeriod(DateTimeOffset item, DateTimeOffset item2);
         List<T> GetByAgentAndTimePeriod(int agentId, DateTimeOffset item, DateTimeOffset item2);
 
-        DateTimeOffset GetMaxDate(int agentId);
+        DateTimeOffset GetMaxDate(long agentId);
         void Create(T item);
         
     }
