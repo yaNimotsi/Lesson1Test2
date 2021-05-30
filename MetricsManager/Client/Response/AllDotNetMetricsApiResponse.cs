@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MetricsManager.DAL.Client.Response
+namespace MetricsManager.Client.Response
 {
     public class AllDotNetMetricsApiResponse
     {

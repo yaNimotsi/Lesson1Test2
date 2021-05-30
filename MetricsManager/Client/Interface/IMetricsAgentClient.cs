@@ -1,7 +1,7 @@
-﻿using MetricsManager.DAL.Client.Request;
-using MetricsManager.DAL.Client.Response;
+﻿using MetricsManager.Client.Request;
+using MetricsManager.Client.Response;
 
-namespace MetricsManager.DAL.Client.Interface
+namespace MetricsManager.Client.Interface
 {
     public interface IMetricsAgentClient
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MetricsManager.DAL.Client.Interface;
-using MetricsManager.DAL.Client.Request;
+using MetricsManager.Client.Interface;
+using MetricsManager.Client.Request;
 using MetricsManager.DAL.Models;
 using MetricsManager.DAL.Repository;
 using Quartz;

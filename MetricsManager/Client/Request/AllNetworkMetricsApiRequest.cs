@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MetricsManager.DAL.Client.Request
+namespace MetricsManager.Client.Request
 {
-    public class AllDotNetCpuMetricsApiRequest
+    public class AllNetworkMetricsApiRequest
     {
         public string AgentUri { get; set; }
         public DateTimeOffset FromTime { get; set; }

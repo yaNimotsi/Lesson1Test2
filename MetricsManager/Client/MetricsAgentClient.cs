@@ -1,14 +1,12 @@
-﻿using MetricsManager.DAL.Client.Interface;
-using MetricsManager.DAL.Client.Request;
-using MetricsManager.DAL.Client.Response;
-
-using NLog;
-
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Text.Json;
+using MetricsManager.Client.Interface;
+using MetricsManager.Client.Request;
+using MetricsManager.Client.Response;
+using NLog;
 
-namespace MetricsManager.DAL.Client
+namespace MetricsManager.Client
 {
     public class MetricsAgentClient : IMetricsAgentClient
     {

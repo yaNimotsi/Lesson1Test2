@@ -1,9 +1,6 @@
 using AutoMapper;
 
 using FluentMigrator.Runner;
-
-using MetricsManager.DAL.Client;
-using MetricsManager.DAL.Client.Interface;
 using MetricsManager.DAL.Jobs;
 using MetricsManager.DAL.Jobs.HostedService;
 using MetricsManager.DAL.Jobs.Schedule;
@@ -22,6 +19,8 @@ using Quartz.Impl;
 using Quartz.Spi;
 
 using System;
+using MetricsManager.Client;
+using MetricsManager.Client.Interface;
 using MetricsManager.DAL.Jobs.MetricJobs;
 
 namespace MetricsManager
