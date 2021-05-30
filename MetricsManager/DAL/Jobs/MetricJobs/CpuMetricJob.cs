@@ -4,6 +4,7 @@ using MetricsManager.Client.Interface;
 using MetricsManager.Client.Request;
 using MetricsManager.DAL.Models;
 using MetricsManager.DAL.Repository;
+using Microsoft.Extensions.Logging;
 using Quartz;
 
 namespace MetricsManager.DAL.Jobs.MetricJobs
@@ -13,11 +14,13 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
         private readonly ICpuMetricsRepository _cpuRepository;
         private readonly IAgentsRepository _agentsRepository;
         private readonly IMetricsAgentClient _client;
-        public CpuMetricJob(ICpuMetricsRepository cpuRepository, IAgentsRepository agentsRepository ,IMetricsAgentClient client)
+        private readonly ILogger<CpuMetricJob> _logger;
+        public CpuMetricJob(ICpuMetricsRepository cpuRepository, IAgentsRepository agentsRepository, IMetricsAgentClient client, ILogger<CpuMetricJob> logger)
         {
             _cpuRepository = cpuRepository;
             _agentsRepository = agentsRepository;
             _client = client;
+            _logger = logger;
         }
         public Task Execute(IJobExecutionContext context)
         {

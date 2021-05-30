@@ -18,7 +18,8 @@ namespace MetricsManager.DAL.Jobs
 
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-            return _serviceProvider.GetRequiredService(bundle.JobDetail.JobType) as IJob;
+            var rez = _serviceProvider.GetRequiredService(bundle.JobDetail.JobType) as IJob;
+            return rez;
         }
 
         public void ReturnJob(IJob job)

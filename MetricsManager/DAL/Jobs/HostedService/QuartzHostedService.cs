@@ -1,13 +1,10 @@
-﻿using MetricsManager.DAL.Jobs.Schedule;
-
-using Microsoft.Extensions.Hosting;
-
-using Quartz;
-using Quartz.Spi;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using MetricsManager.DAL.Jobs.Schedule;
+using Microsoft.Extensions.Hosting;
+using Quartz;
+using Quartz.Spi;
 
 namespace MetricsManager.DAL.Jobs.HostedService
 {
@@ -26,7 +23,6 @@ namespace MetricsManager.DAL.Jobs.HostedService
             _jobSchedules = jobSchedules;
             _jobFactory = jobFactory;
         }
-
         public IScheduler Scheduler { get; set; }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -59,6 +55,7 @@ namespace MetricsManager.DAL.Jobs.HostedService
                 .WithDescription(jobType.Name)
                 .Build();
         }
+
         private static ITrigger CreateTrigger(JobSchedule schedule)
         {
             return TriggerBuilder

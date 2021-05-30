@@ -18,7 +18,8 @@ using Quartz.Impl;
 using Quartz.Spi;
 
 using System.Data.SQLite;
-using MetricsAgent.DAL.Jobs.HostedService;
+
+using QuartzHostedService = MetricsManager.DAL.Jobs.HostedService.QuartzHostedService;
 
 namespace MetricsAgent
 {

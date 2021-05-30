@@ -4,16 +4,18 @@ using System.Text.Json;
 using MetricsManager.Client.Interface;
 using MetricsManager.Client.Request;
 using MetricsManager.Client.Response;
+using Microsoft.Extensions.Logging;
 using NLog;
+using ILogger = NLog.ILogger;
 
 namespace MetricsManager.Client
 {
     public class MetricsAgentClient : IMetricsAgentClient
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger _logger;
+        private readonly ILogger<MetricsAgentClient> _logger;
 
-        public MetricsAgentClient(HttpClient client, ILogger logger)
+        public MetricsAgentClient(HttpClient client, ILogger<MetricsAgentClient> logger)
         {
             _httpClient = client;
             _logger = logger;
@@ -27,6 +29,8 @@ namespace MetricsManager.Client
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
                 $"{request.AgentUri}/api/cpumetrics/from/{fromTime}/to/{toTime}");
 
+            
+
             try
             {
                 var response = _httpClient.SendAsync(httpRequest).Result;
@@ -36,7 +40,7 @@ namespace MetricsManager.Client
             }
             catch (Exception e)
             {
-                _logger.Error(e.Message);
+                _logger.Log(0,e.Message);
             }
 
             return null;

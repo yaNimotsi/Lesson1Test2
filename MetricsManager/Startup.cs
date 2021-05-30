@@ -1,3 +1,5 @@
+using System;
+using System.Data.SQLite;
 using AutoMapper;
 
 using FluentMigrator.Runner;
@@ -15,14 +17,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using Polly;
-
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
-
-using System;
 
 namespace MetricsManager
 {
@@ -39,6 +37,7 @@ namespace MetricsManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            ConfigureSqlLiteConnection(services);
             services.AddSingleton<AgentInfo>();
 
             services.AddSingleton<IAgentsRepository, AgentsRepository>();
@@ -64,9 +63,10 @@ namespace MetricsManager
             services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
                 .AddTransientHttpErrorPolicy(p =>
                     p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
-
-            services.AddHostedService<QuartzHostedService>();
-
+            
+            services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
@@ -94,10 +94,18 @@ namespace MetricsManager
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(RamMetricsJob),
                 cronExpression: "0/5 * * * * ?"));
+            
+            services.AddHostedService<QuartzHostedService>();
+        }
+
+        private void ConfigureSqlLiteConnection(IServiceCollection services)
+        {
+            var connction = new SQLiteConnection(ConnToDB.ConnectionString);
+            connction.Open();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
         {
             if (env.IsDevelopment())
             {
