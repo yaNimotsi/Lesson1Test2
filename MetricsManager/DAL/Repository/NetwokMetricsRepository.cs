@@ -44,6 +44,16 @@ namespace MetricsManager.DAL.Repository
             }
         }
 
+        public DateTimeOffset GetMaxDate()
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Execute("SELECT max(time) from NetworkMetrics");
+            }
+
+            return DateTimeOffset.UtcNow;
+        }
+
         public void Create(NetworkMetrics item)
         {
             using (var connection = new SQLiteConnection(ConnectionString))

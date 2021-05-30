@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MetricsManager.Response
+namespace MetricsManager.DAL.Client.Response
 {
     public class AllCpuMetricsApiResponse
     {
-        public List<CpuMetricDto> Metrics { get; set; }
+        public List<CpuMetricApiDto> Metrics { get; set; }
     }
 
-    public class CpuMetricDto
+    public class CpuMetricApiDto
     {
         public int AgentId { get; set; }
         public DateTimeOffset Time { get; set; }

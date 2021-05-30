@@ -2,6 +2,10 @@ using AutoMapper;
 
 using FluentMigrator.Runner;
 
+using MetricsManager.DAL.Jobs;
+using MetricsManager.DAL.Jobs.HostedService;
+using MetricsManager.DAL.Jobs.Jobs;
+using MetricsManager.DAL.Jobs.Schedule;
 using MetricsManager.DAL.Repository;
 
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +13,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 
 namespace MetricsManager
 {
@@ -46,6 +54,36 @@ namespace MetricsManager
                 mp.AddProfile(new MapperProfile()));
             var mapper = mapperConfiguration.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.AddHostedService<QuartzHostedService>();
+
+            services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+
+            services.AddSingleton<CpuMetricJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(CpuMetricJob),
+                cronExpression: "0/5 * * * * ?"));
+
+            services.AddSingleton<DotNetMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(DotNetMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
+
+            services.AddSingleton<HddMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(HddMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
+
+            services.AddSingleton<NetworkMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NetworkMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
+
+            services.AddSingleton<RamMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(RamMetricsJob),
+                cronExpression: "0/5 * * * * ?"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,6 @@
-﻿using System;
+﻿ using System;
 
-namespace MetricsManager.Request
+ namespace MetricsManager.Request
 {
     public class CpuMetricCreateRequest
     {

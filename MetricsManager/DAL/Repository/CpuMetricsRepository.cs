@@ -16,7 +16,17 @@ namespace MetricsManager.DAL.Repository
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
         private static readonly string ConnectionString = ConnToDB.ConnectionString;
-        
+
+        public DateTimeOffset GetMaxDate()
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Execute("SELECT max(time) from CpuMetrics");
+            }
+
+            return DateTimeOffset.UtcNow;
+        }
+
         public void Create(CpuMetrics item)
         {
             using (var connection = new SQLiteConnection(ConnectionString))

@@ -34,7 +34,7 @@ namespace MetricsManager.Controllers
 
             var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 
-            var response = new AllCpuMetricsResponse()
+            var response = new AllCpuMetricsApiResponse()
             {
                 Metrics = new List<CpuMetricDto>()
             };
@@ -55,7 +55,7 @@ namespace MetricsManager.Controllers
 
             var metrics = _repository.GetByAgentAndTimePeriod(agentId,fromTime, toTime);
 
-            var response = new AllCpuMetricsResponse()
+            var response = new AllCpuMetricsApiResponse()
             {
                 Metrics = new List<CpuMetricDto>()
             };

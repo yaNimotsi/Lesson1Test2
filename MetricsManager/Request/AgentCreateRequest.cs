@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MetricsManager.Request
+﻿namespace MetricsManager.Request
 {
     public class AgentCreateRequest
     {
