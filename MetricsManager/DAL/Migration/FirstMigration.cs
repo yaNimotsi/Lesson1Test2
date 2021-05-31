@@ -14,31 +14,31 @@ namespace MetricsManager.DAL.Migration
             Create.Table("CpuMetrics")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("agentId").AsInt64()
-                .WithColumn("value").AsInt32()
+                .WithColumn("Value").AsInt32()
                 .WithColumn("time").AsInt64();
 
             Create.Table("DotNetMetrics")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("agentId").AsInt64()
-                .WithColumn("value").AsInt32()
+                .WithColumn("Value").AsInt32()
                 .WithColumn("time").AsInt64();
 
             Create.Table("HddMetrics")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("agentId").AsInt64()
-                .WithColumn("value").AsInt32()
+                .WithColumn("Value").AsInt32()
                 .WithColumn("time").AsInt64();
 
             Create.Table("NetworkMetrics")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("agentId").AsInt64()
-                .WithColumn("value").AsInt32()
+                .WithColumn("Value").AsInt32()
                 .WithColumn("time").AsInt64();
 
             Create.Table("RamMetrics")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("agentId").AsInt64()
-                .WithColumn("value").AsInt32()
+                .WithColumn("Value").AsInt32()
                 .WithColumn("time").AsInt64();
         }
 

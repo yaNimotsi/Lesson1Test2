@@ -73,9 +73,10 @@ namespace MetricsManager
             services.AddSingleton<CpuMetricJob>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(CpuMetricJob),
-                cronExpression: "0/5 * * * * ?"));
+                //cronExpression: "0/5 * * * * ?"));
+                cronExpression: "0/15 * * * * ?"));
 
-            services.AddSingleton<DotNetMetricsJob>();
+            /*services.AddSingleton<DotNetMetricsJob>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(DotNetMetricsJob),
                 cronExpression: "0/5 * * * * ?"));
@@ -93,8 +94,8 @@ namespace MetricsManager
             services.AddSingleton<RamMetricsJob>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(RamMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
-            
+                cronExpression: "0/5 * * * * ?"));*/
+
             services.AddHostedService<QuartzHostedService>();
         }
 
