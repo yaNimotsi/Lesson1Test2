@@ -19,14 +19,14 @@ namespace MetricsAgent.Controllers
         public RamAgentController(ILogger<RamAgentController> logger, IRamMetricsRepository repository)
         {
             _logger = logger;
-            _logger.LogDebug("NLog in NetworkAgentController");
+            _logger.LogDebug("NLog in RamAgentController");
             this._repository = repository;
         }
 
         [HttpGet("byPeriod")]
         public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
-            _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
+            _logger.LogInformation($"Start method GetByTimePeriod in RamAgentController by interval {fromTime}-{toTime}");
 
             var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 

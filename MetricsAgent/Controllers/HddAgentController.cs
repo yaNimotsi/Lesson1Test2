@@ -19,14 +19,14 @@ namespace MetricsAgent.Controllers
         public HddAgentController(ILogger<HddAgentController> logger, IHddMetricsRepository repository)
         {
             _logger = logger;
-            _logger.LogDebug("NLog in DotNetAgentController");
+            _logger.LogDebug("NLog in HddAgentController");
             this._repository = repository;
         }
 
         [HttpGet("byPeriod")]
         public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
         {
-            _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
+            _logger.LogInformation($"Start method GetByTimePeriod in HddAgentController by interval {fromTime}-{toTime}");
 
             var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 

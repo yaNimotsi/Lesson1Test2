@@ -1,12 +1,14 @@
-﻿using System;
-using System.Net.Http;
-using System.Text.Json;
-using MetricsManager.Client.Interface;
+﻿using MetricsManager.Client.Interface;
 using MetricsManager.Client.Request;
 using MetricsManager.Client.Response;
+
 using Microsoft.Extensions.Logging;
+
 using NLog;
-using ILogger = NLog.ILogger;
+
+using System;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace MetricsManager.Client
 {
@@ -26,10 +28,7 @@ namespace MetricsManager.Client
             var fromTime = request.FromTime;
             var toTime = request.ToTime;
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.AgentUri}/api/cpumetrics/from/{fromTime}/to/{toTime}");
-
-            
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -48,22 +47,90 @@ namespace MetricsManager.Client
 
         public AllDotNetMetricsApiResponse GetDotNetMetricsFromAgent(AllDotNetCpuMetricsApiRequest request)
         {
-            throw new NotImplementedException();
+            var fromTime = request.FromTime;
+            var toTime = request.ToTime;
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
+
+            try
+            {
+                var response = _httpClient.SendAsync(httpRequest).Result;
+
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                return JsonSerializer.DeserializeAsync<AllDotNetMetricsApiResponse>(responseStream).Result;
+            }
+            catch (Exception e)
+            {
+                _logger.Log(0, e.Message);
+            }
+
+            return null;
         }
 
         public AllHddMetricsApiResponse GetHddMetricsFromAgent(AllHddMetricsApiRequest request)
         {
-            throw new NotImplementedException();
+            var fromTime = request.FromTime;
+            var toTime = request.ToTime;
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
+
+            try
+            {
+                var response = _httpClient.SendAsync(httpRequest).Result;
+
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                return JsonSerializer.DeserializeAsync<AllHddMetricsApiResponse>(responseStream).Result;
+            }
+            catch (Exception e)
+            {
+                _logger.Log(0, e.Message);
+            }
+
+            return null;
         }
 
         public AllNetworkMetricsApiResponse GetNetworkMetricsFromAgent(AllNetworkMetricsApiRequest request)
         {
-            throw new NotImplementedException();
+            var fromTime = request.FromTime;
+            var toTime = request.ToTime;
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
+
+            try
+            {
+                var response = _httpClient.SendAsync(httpRequest).Result;
+
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                return JsonSerializer.DeserializeAsync<AllNetworkMetricsApiResponse>(responseStream).Result;
+            }
+            catch (Exception e)
+            {
+                _logger.Log(0, e.Message);
+            }
+
+            return null;
         }
 
         public AllRamMetricsApiResponse GetRamMetricsFromAgent(AllRamMetricsApiRequest request)
         {
-            throw new NotImplementedException();
+            var fromTime = request.FromTime;
+            var toTime = request.ToTime;
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
+
+            try
+            {
+                var response = _httpClient.SendAsync(httpRequest).Result;
+
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                return JsonSerializer.DeserializeAsync<AllRamMetricsApiResponse>(responseStream).Result;
+            }
+            catch (Exception e)
+            {
+                _logger.Log(0, e.Message);
+            }
+
+            return null;
         }
     }
 }
