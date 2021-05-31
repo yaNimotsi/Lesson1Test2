@@ -25,10 +25,10 @@ namespace MetricsManager.Client
 
         public AllCpuMetricsApiResponse GetCpuMetricsFromAgent(AllCpuMetricsApiRequest request)
         {
-            var fromTime = request.FromTime;
-            var toTime = request.ToTime;
+            var fromTime = request.FromTime.ToString("O"); //2021-01-05T08:15:45
+            var toTime = request.ToTime.ToString("O");
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/CpuAgent/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -50,7 +50,7 @@ namespace MetricsManager.Client
             var fromTime = request.FromTime;
             var toTime = request.ToTime;
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/DotNetAgent/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -72,7 +72,7 @@ namespace MetricsManager.Client
             var fromTime = request.FromTime;
             var toTime = request.ToTime;
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/HddAgent/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -94,7 +94,7 @@ namespace MetricsManager.Client
             var fromTime = request.FromTime;
             var toTime = request.ToTime;
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/NetworkAgent/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {
@@ -116,7 +116,7 @@ namespace MetricsManager.Client
             var fromTime = request.FromTime;
             var toTime = request.ToTime;
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/api/byPeriod/from/{fromTime}/to/{toTime}");
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.AgentUri}/RamAgent/byPeriod/from/{fromTime}/to/{toTime}");
 
             try
             {

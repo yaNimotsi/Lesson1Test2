@@ -19,7 +19,7 @@ namespace MetricsAgent.DAL.Jobs.Jobs
         public Task Execute(IJobExecutionContext context)
         {
             var cpuUsageInPercents = Convert.ToInt32(_dotNetCounter.NextValue());
-            var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
             _repository.Create(new DotNetMetrics { Time = time, Value = cpuUsageInPercents });
 

@@ -21,11 +21,14 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("SELECT max(time) from CpuMetrics where agentId = @agentId", 
+                var result = connection.Query<long>("SELECT max(time) from CpuMetrics where agentId = @agentId", 
                     new
                     {
                         agentId = agentId
-                    });
+                    }).ToList();
+
+                if (result != null)
+                    return DateTimeOffset.FromUnixTimeMilliseconds(result[0]);
             }
 
             return DateTimeOffset.UtcNow;
