@@ -45,9 +45,9 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
                     _networkRepository.Create(new NetworkMetrics()
                     {
                         AgentId = agentId,
-                        Id = metric.Id,
-                        Time = metric.Time.ToUnixTimeMilliseconds(),
-                        Value = metric.Value
+                        Id = metric.id,
+                        Time = metric.time.ToUnixTimeMilliseconds(),
+                        Value = metric.value
                     });
                 }
             }

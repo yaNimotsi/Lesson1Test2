@@ -20,7 +20,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<HddMetrics>("SELECT id, agentId, Value, time FROM HddMetrics WHERE time >= @startPeriod and time <= @endPeriod",
+                return connection.Query<HddMetrics>("SELECT id, agentId, value, time FROM HddMetrics WHERE time >= @startPeriod and time <= @endPeriod",
                     new
                     {
                         fromTime = fromTime.ToUnixTimeMilliseconds(),
@@ -33,7 +33,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<HddMetrics>("SELECT id, agentId, Value, time FROM HddMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
+                return connection.Query<HddMetrics>("SELECT id, agentId, value, time FROM HddMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
                     new
                     {
                         agentId = agentId,
@@ -61,7 +61,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("Insert into HddMetrics(agentId, Value, time) Values(@agentId,@Value,@time)",
+                connection.Execute("Insert into HddMetrics(agentId, value, time) Values(@agentId,@value,@time)",
                     new
                     {
                         value = item.Value,

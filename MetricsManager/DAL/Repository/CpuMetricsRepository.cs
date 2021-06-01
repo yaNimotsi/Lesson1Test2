@@ -38,7 +38,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("Insert into CpuMetrics(agentId, Value, time) Values(@agentId,@Value,@time)",
+                connection.Execute("Insert into CpuMetrics(agentId, value, time) Values(@agentId,@value,@time)",
                     new
                     {
                         agentId = item.Value,
@@ -52,7 +52,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<CpuMetrics>("SELECT id, agentId, Value, time FROM CpuMetrics WHERE time >= @fromTime AND time <= @toTime",
+                return connection.Query<CpuMetrics>("SELECT id, agentId, value, time FROM CpuMetrics WHERE time >= @fromTime AND time <= @toTime",
                     new
                     {
                         fromTime = fromTime.ToUnixTimeMilliseconds(),
@@ -65,7 +65,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<CpuMetrics>("SELECT id, agentId, Value, time FROM CpuMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
+                return connection.Query<CpuMetrics>("SELECT id, agentId, value, time FROM CpuMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
                     new
                     {
                         agentId = agentId,

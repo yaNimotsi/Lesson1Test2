@@ -11,8 +11,8 @@ namespace MetricsManager.Client.Response
     public class HddMetricApiDto
     {
         public int AgentId { get; set; }
-        public DateTimeOffset Time { get; set; }
-        public int Value { get; set; }
-        public int Id { get; set; }
+        public DateTimeOffset time { get; set; }
+        public int value { get; set; }
+        public int id { get; set; }
     }
 }

@@ -46,9 +46,9 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
                     _hddRepository.Create(new HddMetrics()
                     {
                         AgentId = agentId,
-                        Id = metric.Id,
-                        Time = metric.Time.ToUnixTimeMilliseconds(),
-                        Value = metric.Value
+                        Id = metric.id,
+                        Time = metric.time.ToUnixTimeMilliseconds(),
+                        Value = metric.value
                     });
                 }
             }
