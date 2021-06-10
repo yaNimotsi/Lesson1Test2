@@ -9,6 +9,7 @@ using NLog;
 using System;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 
 namespace MetricsManager.Client
 {
@@ -35,7 +36,14 @@ namespace MetricsManager.Client
                 var response = _httpClient.SendAsync(httpRequest).Result;
 
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<AllCpuMetricsApiResponse>(responseStream).Result;
+                
+                return JsonSerializer.DeserializeAsync<AllCpuMetricsApiResponse>(responseStream, new JsonSerializerOptions()
+                    {
+                        PropertyNameCaseInsensitive = true
+                    },
+                    CancellationToken.None).Result; ;
+
+                //return JsonSerializer.DeserializeAsync<AllCpuMetricsApiResponse>(responseStream).Result;
             }
             catch (Exception e)
             {
@@ -57,7 +65,11 @@ namespace MetricsManager.Client
                 var response = _httpClient.SendAsync(httpRequest).Result;
 
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<AllDotNetMetricsApiResponse>(responseStream).Result;
+                return JsonSerializer.DeserializeAsync<AllDotNetMetricsApiResponse>(responseStream, new JsonSerializerOptions()
+                    {
+                        PropertyNameCaseInsensitive = true
+                    },
+                    CancellationToken.None).Result; ;
             }
             catch (Exception e)
             {
@@ -79,7 +91,11 @@ namespace MetricsManager.Client
                 var response = _httpClient.SendAsync(httpRequest).Result;
 
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<AllHddMetricsApiResponse>(responseStream).Result;
+                return JsonSerializer.DeserializeAsync<AllHddMetricsApiResponse>(responseStream, new JsonSerializerOptions()
+                    {
+                        PropertyNameCaseInsensitive = true
+                    },
+                    CancellationToken.None).Result; ;
             }
             catch (Exception e)
             {
@@ -101,7 +117,11 @@ namespace MetricsManager.Client
                 var response = _httpClient.SendAsync(httpRequest).Result;
 
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<AllNetworkMetricsApiResponse>(responseStream).Result;
+                return JsonSerializer.DeserializeAsync<AllNetworkMetricsApiResponse>(responseStream, new JsonSerializerOptions()
+                    {
+                        PropertyNameCaseInsensitive = true
+                    },
+                    CancellationToken.None).Result; ;
             }
             catch (Exception e)
             {
@@ -123,7 +143,11 @@ namespace MetricsManager.Client
                 var response = _httpClient.SendAsync(httpRequest).Result;
 
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
-                return JsonSerializer.DeserializeAsync<AllRamMetricsApiResponse>(responseStream).Result;
+                return JsonSerializer.DeserializeAsync<AllRamMetricsApiResponse>(responseStream, new JsonSerializerOptions()
+                    {
+                        PropertyNameCaseInsensitive = true
+                    },
+                    CancellationToken.None).Result; ;
             }
             catch (Exception e)
             {

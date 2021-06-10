@@ -20,7 +20,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<RamMetrics>("SELECT id, agentId, Value, time FROM RamMetrics WHERE time >= @startPeriod and time <= @endPeriod",
+                return connection.Query<RamMetrics>("SELECT Id, agentId, Value, Time FROM RamMetrics WHERE Time >= @startPeriod and Time <= @endPeriod",
                     new
                     {
                         fromTime = fromTime.ToUnixTimeMilliseconds(),
@@ -33,7 +33,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<RamMetrics>("SELECT id, agentId, Value, time FROM RamMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
+                return connection.Query<RamMetrics>("SELECT Id, agentId, Value, Time FROM RamMetrics WHERE agentId = @agentId and Time >= @fromTime AND Time <= @toTime",
                     new
                     {
                         agentId = agentId,
@@ -47,7 +47,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("SELECT max(time) from RamMetrics where agentId = @agentId",
+                connection.Execute("SELECT max(Time) from RamMetrics where agentId = @agentId",
                     new
                     {
                         agentId = agentId
@@ -61,7 +61,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("Insert into RamMetrics(agentId, Value, time) Values(@agentId,@Value,@time)",
+                connection.Execute("Insert into RamMetrics(agentId, Value, Time) Values(@agentId,@Value,@Time)",
                     new
                     {
                         value = item.Value,

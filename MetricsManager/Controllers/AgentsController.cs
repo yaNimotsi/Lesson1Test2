@@ -26,14 +26,14 @@ namespace MetricsManager.Controllers
         [HttpPut("enable/{agentId}")]
         public IActionResult EnableAgentById([FromRoute] int agentId)
         {
-            _logger.LogInformation($"Enable agent by id {agentId}");
+            _logger.LogInformation($"Enable agent by Id {agentId}");
             return Ok();
         }
 
         [HttpPut("disable/{agentId}")]
         public IActionResult DisableAgentById([FromRoute] int agentId)
         {
-            _logger.LogInformation($"Disable agent by id {agentId}");
+            _logger.LogInformation($"Disable agent by Id {agentId}");
             return Ok();
         }
 

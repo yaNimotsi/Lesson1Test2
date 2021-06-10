@@ -21,7 +21,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                var result = connection.Query<long>("SELECT max(time) from CpuMetrics where agentId = @agentId", 
+                var result = connection.Query<long>("SELECT max(Time) from CpuMetrics where agentId = @agentId", 
                     new
                     {
                         agentId = agentId
@@ -38,10 +38,10 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("Insert into CpuMetrics(agentId, Value, time) Values(@agentId,@Value,@time)",
+                connection.Execute("Insert into CpuMetrics(agentId, Value, Time) Values(@agentId,@Value,@Time)",
                     new
                     {
-                        agentId = item.Value,
+                        agentId = item.AgentId,
                         value = item.Value,
                         time = item.Time
                     });
@@ -52,7 +52,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<CpuMetrics>("SELECT id, agentId, Value, time FROM CpuMetrics WHERE time >= @fromTime AND time <= @toTime",
+                return connection.Query<CpuMetrics>("SELECT Id, agentId, Value, Time FROM CpuMetrics WHERE Time >= @fromTime AND Time <= @toTime",
                     new
                     {
                         fromTime = fromTime.ToUnixTimeMilliseconds(),
@@ -65,7 +65,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<CpuMetrics>("SELECT id, agentId, Value, time FROM CpuMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
+                return connection.Query<CpuMetrics>("SELECT Id, agentId, Value, Time FROM CpuMetrics WHERE agentId = @agentId and Time >= @fromTime AND Time <= @toTime",
                     new
                     {
                         agentId = agentId,

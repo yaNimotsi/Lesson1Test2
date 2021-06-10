@@ -20,7 +20,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<DotNetMetrics>("SELECT id,Value, time FROM DotNetMetrics WHERE time >= @startPeriod and time <= @endPeriod",
+                return connection.Query<DotNetMetrics>("SELECT Id,Value, Time FROM DotNetMetrics WHERE Time >= @startPeriod and Time <= @endPeriod",
                     new
                     {
                         fromTime = fromTime.ToUnixTimeMilliseconds(),
@@ -33,7 +33,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<DotNetMetrics>("SELECT id, agentId, Value, time FROM DotNetMetrics WHERE agentId = @agentId and time >= @fromTime AND time <= @toTime",
+                return connection.Query<DotNetMetrics>("SELECT Id, agentId, Value, Time FROM DotNetMetrics WHERE agentId = @agentId and Time >= @fromTime AND Time <= @toTime",
                     new
                     {
                         agentId = agentId,
@@ -47,7 +47,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("SELECT max(time) from DotNetMetrics where agentId = @agentId",
+                connection.Execute("SELECT max(Time) from DotNetMetrics where agentId = @agentId",
                     new
                     {
                         agentId = agentId
@@ -61,7 +61,7 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                connection.Execute("Insert into DotNetMetrics(Value, time) Values(@Value,@time)",
+                connection.Execute("Insert into DotNetMetrics(Value, Time) Values(@Value,@Time)",
                     new
                     {
                         value = item.Value,

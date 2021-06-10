@@ -73,8 +73,7 @@ namespace MetricsManager
             services.AddSingleton<CpuMetricJob>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(CpuMetricJob),
-                //cronExpression: "0/5 * * * * ?"));
-                cronExpression: "0/15 * * * * ?"));
+                cronExpression: "0/59 * * * * ?"));
 
             /*services.AddSingleton<DotNetMetricsJob>();
             services.AddSingleton(new JobSchedule(
