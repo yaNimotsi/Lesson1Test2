@@ -46,9 +46,9 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
                     _ramRepository.Create(new RamMetrics()
                     {
                         AgentId = agentId,
-                        Id = metric.Id,
-                        Time = metric.Time.ToUnixTimeMilliseconds(),
-                        Value = metric.Value
+                        Id = metric.id,
+                        Time = metric.time.ToUnixTimeMilliseconds(),
+                        Value = metric.value
                     });
                 }
             }

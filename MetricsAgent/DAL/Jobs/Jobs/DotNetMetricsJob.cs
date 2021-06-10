@@ -11,6 +11,7 @@ namespace MetricsAgent.DAL.Jobs.Jobs
     {
         private readonly IDotNetMetricsRepository _repository;
         private readonly PerformanceCounter _dotNetCounter;
+
         public DotNetMetricsJob(IDotNetMetricsRepository repository)
         {
             _repository = repository;
