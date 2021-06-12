@@ -100,8 +100,8 @@ namespace MetricsManager
 
         private void ConfigureSqlLiteConnection(IServiceCollection services)
         {
-            var connction = new SQLiteConnection(ConnToDB.ConnectionString);
-            connction.Open();
+            var connection = new SQLiteConnection(ConnToDB.ConnectionString);
+            connection.Open();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -122,6 +122,8 @@ namespace MetricsManager
             {
                 endpoints.MapControllers();
             });
+
+            migrationRunner.MigrateUp();
         }
     }
 }

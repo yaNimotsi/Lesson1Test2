@@ -22,7 +22,6 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                var rez = connection.Query<AgentModel>("SELECT AgentId, AgentUri FROM Agents").ToList();
                 return connection.Query<AgentModel>("SELECT * FROM Agents").ToList();
             }
         }

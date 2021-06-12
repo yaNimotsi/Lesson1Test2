@@ -24,7 +24,15 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
         }
         public Task Execute(IJobExecutionContext context)
         {
+            _logger.Log(LogLevel.Debug,"Start CpuMetricJob");
+
             var allAgents = _agentsRepository.GetAllAgents();
+
+            //Если агентов в БД не обнаруженно, выходим из Job
+            if (allAgents.Count == 0)
+            {
+                return Task.CompletedTask;
+            }
 
             foreach (var agent in allAgents)
             {
