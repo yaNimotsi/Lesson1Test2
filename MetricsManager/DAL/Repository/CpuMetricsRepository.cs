@@ -21,17 +21,24 @@ namespace MetricsManager.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                var result = connection.Query<long>("SELECT max(Time) from CpuMetrics where agentId = @agentId", 
+                if (connection.Query<long>("SELECT * from CpuMetrics where agentId = @agentId",
                     new
                     {
                         agentId = agentId
-                    }).ToList();
-
-                if (result != null)
+                    }).ToList().Count > 0)
+                {
+                    var result = connection.Query<long>("SELECT max(Time) from CpuMetrics where agentId = @agentId",
+                        new
+                        {
+                            agentId = agentId
+                        }).ToList();
                     return DateTimeOffset.FromUnixTimeMilliseconds(result[0]);
+                }
+                else
+                {
+                    return DateTimeOffset.MinValue;
+                }
             }
-
-            return DateTimeOffset.UtcNow;
         }
 
         public void Create(CpuMetrics item)

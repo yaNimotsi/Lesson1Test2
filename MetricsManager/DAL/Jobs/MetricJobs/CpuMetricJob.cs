@@ -1,11 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
-using MetricsManager.Client.Interface;
+﻿using MetricsManager.Client.Interface;
 using MetricsManager.Client.Request;
 using MetricsManager.DAL.Models;
 using MetricsManager.DAL.Repository;
+
 using Microsoft.Extensions.Logging;
+
 using Quartz;
+
+using System;
+using System.Threading.Tasks;
 
 namespace MetricsManager.DAL.Jobs.MetricJobs
 {
