@@ -19,7 +19,7 @@ namespace MetricsAgent.DAL.Jobs.Jobs
         public Task Execute(IJobExecutionContext context)
         {
             var cpuUsageInPercents = Convert.ToInt32(_rumCounter.NextValue());
-            var time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             _repository.Create(new RamMetrics() { Time = time, Value = cpuUsageInPercents });
 

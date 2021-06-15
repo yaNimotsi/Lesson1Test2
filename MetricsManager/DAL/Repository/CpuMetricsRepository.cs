@@ -36,7 +36,7 @@ namespace MetricsManager.DAL.Repository
                 }
                 else
                 {
-                    return DateTimeOffset.MinValue;
+                    return new DateTimeOffset(2010,1,1,0,0,0,TimeSpan.Zero);
                 }
             }
         }
