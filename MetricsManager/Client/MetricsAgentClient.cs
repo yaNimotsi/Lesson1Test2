@@ -37,11 +37,13 @@ namespace MetricsManager.Client
 
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
                 
-                return JsonSerializer.DeserializeAsync<AllCpuMetricsApiResponse>(responseStream, new JsonSerializerOptions()
+                var result = JsonSerializer.DeserializeAsync<AllCpuMetricsApiResponse>(responseStream, new JsonSerializerOptions()
                     {
                         PropertyNameCaseInsensitive = true
                     },
-                    CancellationToken.None).Result; ;
+                    CancellationToken.None).Result;
+
+                return result.Metrics == null ? null : result;
 
                 //return JsonSerializer.DeserializeAsync<AllCpuMetricsApiResponse>(responseStream).Result;
             }

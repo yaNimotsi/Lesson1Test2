@@ -1,5 +1,3 @@
-using System;
-using System.Data.SQLite;
 using AutoMapper;
 
 using FluentMigrator.Runner;
@@ -17,10 +15,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using Polly;
+
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
+
+using System;
+using System.Data.SQLite;
 
 namespace MetricsManager
 {

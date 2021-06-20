@@ -51,7 +51,7 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
                     ToTime = toTime
                 });
 
-                if (allMetrics.Metrics == null) continue;
+                if (allMetrics == null || allMetrics?.Metrics.Count == 0) continue;
 
                 foreach (var metric in allMetrics.Metrics)
                 {
