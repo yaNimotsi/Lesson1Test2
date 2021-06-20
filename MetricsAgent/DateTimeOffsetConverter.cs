@@ -10,7 +10,7 @@ namespace MetricsAgent
     {
         public DateTimeOffset Convert(long source, DateTimeOffset destination, ResolutionContext context)
         {
-            return DateTimeOffset.FromUnixTimeMilliseconds(source);
+            return DateTimeOffset.FromUnixTimeSeconds(source);
         }
     }
 }

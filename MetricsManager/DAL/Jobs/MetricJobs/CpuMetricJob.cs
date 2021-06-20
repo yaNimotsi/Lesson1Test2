@@ -42,7 +42,7 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
                 var agentId = agent.AgentId;
                 var agentUri = agent.AgentUri;
                 var fromTime = _cpuRepository.GetMaxDate(agentId);
-                var toTime = DateTimeOffset.UtcNow;
+                var toTime = DateTimeOffset.Now;
 
                 var allMetrics = _client.GetCpuMetricsFromAgent(new AllCpuMetricsApiRequest
                 {
@@ -59,7 +59,7 @@ namespace MetricsManager.DAL.Jobs.MetricJobs
                     {
                         AgentId = agentId,
                         Id = metric.id,
-                        Time = metric.time.ToUnixTimeMilliseconds(),
+                        Time = metric.time.ToUnixTimeSeconds(),
                         Value = metric.value
                     });
                 }
