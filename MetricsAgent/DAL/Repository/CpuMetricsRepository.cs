@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Dapper;
+
+using MetricsAgent.DAL.Models;
+
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
-using MetricsAgent.DAL.Models;
-using Dapper;
 
 namespace MetricsAgent.DAL.Repository
 {
@@ -33,11 +35,20 @@ namespace MetricsAgent.DAL.Repository
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
+                var fromUnix = fromTime.ToUnixTimeSeconds();
+                var toUnix = toTime.ToUnixTimeSeconds();
+
+                var test = connection.Query<CpuMetrics>("SELECT id, value, time FROM CpuMetrics WHERE time >= @fromTime AND time <= @toTime",
+                    new
+                    {
+                        fromTime = fromUnix,
+                        toTime = toUnix
+                    }).ToList();
                 return connection.Query<CpuMetrics>("SELECT id, value, time FROM CpuMetrics WHERE time >= @fromTime AND time <= @toTime",
                     new
                     {
-                        fromTime = fromTime.ToUnixTimeMilliseconds(),
-                        toTime = toTime.ToUnixTimeMilliseconds()
+                        fromTime = fromTime.ToUnixTimeSeconds(),
+                        toTime = toTime.ToUnixTimeSeconds()
                     }).ToList();
             }
         }

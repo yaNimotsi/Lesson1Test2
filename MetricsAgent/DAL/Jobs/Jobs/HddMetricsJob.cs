@@ -20,7 +20,7 @@ namespace MetricsAgent.DAL.Jobs.Jobs
         public Task Execute(IJobExecutionContext context)
         {
             var cpuUsageInPercents = Convert.ToInt32(_hddCounter.NextValue());
-            var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             _repository.Create(new HddMetrics { Time = time, Value = cpuUsageInPercents });
 

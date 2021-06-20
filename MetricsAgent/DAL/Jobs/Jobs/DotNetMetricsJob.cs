@@ -11,15 +11,20 @@ namespace MetricsAgent.DAL.Jobs.Jobs
     {
         private readonly IDotNetMetricsRepository _repository;
         private readonly PerformanceCounter _dotNetCounter;
+
         public DotNetMetricsJob(IDotNetMetricsRepository repository)
         {
             _repository = repository;
-            _dotNetCounter = new PerformanceCounter(".Net Memory Cache 4.0", "Cache Hits");
+            //_dotNetCounter = new PerformanceCounter(".NET CLR", "Exceps Thrown");
+
+            var test = PerformanceCounterCategory.GetCategories();
+            //ASP.NET Apps v4.0.30319
+            _dotNetCounter = new PerformanceCounter(".NET CLR Loading", "Total Appdomains");
         }
         public Task Execute(IJobExecutionContext context)
         {
             var cpuUsageInPercents = Convert.ToInt32(_dotNetCounter.NextValue());
-            var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             _repository.Create(new DotNetMetrics { Time = time, Value = cpuUsageInPercents });
 

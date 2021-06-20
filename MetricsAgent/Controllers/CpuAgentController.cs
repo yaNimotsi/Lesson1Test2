@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+
+using MetricsAgent.DAL.Repository;
+using MetricsAgent.Requests;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
-using AutoMapper;
-using MetricsAgent.DAL.Models;
-using MetricsAgent.DAL.Repository;
-using MetricsAgent.DAL.Requests;
-using MetricsAgent.Requests;
-using Microsoft.Extensions.Logging;
-using NLog;
-using ILogger = NLog.ILogger;
 
 namespace MetricsAgent.Controllers
 {
@@ -19,24 +17,22 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<CpuAgentController> _logger;
         private readonly ICpuMetricsRepository _repository;
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
 
         public CpuAgentController(ILogger<CpuAgentController> logger, ICpuMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug("NLog in CpuAgentController");
             this._repository = repository;
-            this.mapper = mapper;
+            _mapper = mapper;
         }
 
-        [HttpGet("byPeriod")]
-        public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
+        [HttpGet("byPeriod/fromTime/{fromTime}/toTime/{toTime}")]
+        //public IActionResult GetByTimePeriod([FromQuery] DateTimeOffset fromTime, [FromQuery] DateTimeOffset toTime)
+        public IActionResult GetByTimePeriod([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
             _logger.LogInformation($"Start method GetByTimePeriod in CpuAgentController by interval {fromTime}-{toTime}");
 
-
-            
-            
             var metrics = _repository.GetByTimePeriod(fromTime, toTime);
 
             var response = new AllCpuMetricsResponse()
@@ -46,7 +42,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
+                response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
             }
 
             return Ok(response);

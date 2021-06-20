@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+
 using MetricsAgent.DAL.Models;
 using MetricsAgent.Requests;
+
+using System;
 
 namespace MetricsAgent
 {
@@ -14,6 +13,10 @@ namespace MetricsAgent
         {
             CreateMap<long, DateTimeOffset>().ConvertUsing(new DateTimeOffsetConverter());
             CreateMap<CpuMetrics, CpuMetricDto>();
+            CreateMap<DotNetMetrics, DotNetMetricDto>();
+            CreateMap<HddMetrics, HddMetricDto>();
+            CreateMap<NetworkMetrics, NetworkMetricDto>();
+            CreateMap<RamMetrics, RamMetricDto>();
         }
     }
 }

@@ -20,6 +20,7 @@ using Quartz.Spi;
 using System.Data.SQLite;
 using MetricsAgent.DAL.Jobs.HostedService;
 
+
 namespace MetricsAgent
 {
     public class Startup
@@ -66,7 +67,7 @@ namespace MetricsAgent
                 jobType:typeof(CpuMetricJob),
                 cronExpression: "0/5 * * * * ?"));
 
-            services.AddSingleton<DotNetMetricsJob>();
+            /*services.AddSingleton<DotNetMetricsJob>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(DotNetMetricsJob),
                 cronExpression: "0/5 * * * * ?"));
@@ -84,7 +85,7 @@ namespace MetricsAgent
             services.AddSingleton<RamMetricsJob>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(RamMetricsJob),
-                cronExpression: "0/5 * * * * ?"));
+                cronExpression: "0/5 * * * * ?"));*/
         }
 
         private void ConfigureSqlLiteConnection(IServiceCollection services)

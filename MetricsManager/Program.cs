@@ -1,12 +1,10 @@
 using System;
-using MetricsManager;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 
-
-namespace MetricManager
+namespace MetricsManager
 {
     public class Program
     {
