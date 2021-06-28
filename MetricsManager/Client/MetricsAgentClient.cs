@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace MetricsManager.Client
 {
-    public class MetricsAgentClient : IMetricsAgentClient
+    public partial class MetricsAgentClient : IMetricsAgentClient
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<MetricsAgentClient> _logger;
