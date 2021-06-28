@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 
 using FluentMigrator.Runner;
@@ -18,7 +19,10 @@ using Quartz.Impl;
 using Quartz.Spi;
 
 using System.Data.SQLite;
+using System.IO;
+using System.Reflection;
 using MetricsAgent.DAL.Jobs.HostedService;
+using Microsoft.OpenApi.Models;
 
 
 namespace MetricsAgent
@@ -86,6 +90,31 @@ namespace MetricsAgent
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(RamMetricsJob),
                 cronExpression: "0/5 * * * * ?"));*/
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API сервиса агента сбора метрик",
+                    Description = "Тут можно поиграть с api нашего сервиса",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Nimot",
+                        Email = string.Empty,
+                        //Url = new Uri("https://kremlin.ru"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "можно указать под какой лицензией все опубликовано",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         private void ConfigureSqlLiteConnection(IServiceCollection services)
@@ -110,6 +139,15 @@ namespace MetricsAgent
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API сервиса сбора метрик");
+                //С нулевым префиксом не заводится
+                //c.RoutePrefix = string.Empty;
             });
 
             migrationRunner.MigrateUp();
