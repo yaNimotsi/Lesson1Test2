@@ -24,6 +24,9 @@ using Quartz.Spi;
 
 using System;
 using System.Data.SQLite;
+using System.IO;
+using System.Reflection;
+using Microsoft.OpenApi.Models;
 
 namespace MetricsManager
 {
@@ -99,6 +102,30 @@ namespace MetricsManager
                 cronExpression: "0/5 * * * * ?"));*/
 
             services.AddHostedService<QuartzHostedService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API сервиса менеджера сбора метрик",
+                    Description = "Тут можно поиграть с api нашего сервиса",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Nimot",
+                        Email = string.Empty,
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "можно указать под какой лицензией все опубликовано",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         private void ConfigureSqlLiteConnection(IServiceCollection services)
@@ -125,6 +152,9 @@ namespace MetricsManager
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API менеджера агентов сбора метрик"));
 
             migrationRunner.MigrateUp();
         }
